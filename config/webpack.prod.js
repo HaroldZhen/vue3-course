@@ -10,7 +10,7 @@ module.exports = merge(common, {
   devtool: false,
   output: {
     path: paths.build,
-    publicPath: '/',
+    publicPath: '/vue3-course/',
     filename: 'js/[name].[contenthash].bundle.js',
   },
   module: {
