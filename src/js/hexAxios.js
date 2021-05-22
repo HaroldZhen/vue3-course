@@ -11,6 +11,7 @@ export const api = {
   signin: '/admin/signin',
   check: '/api/user/check',
   product: {
+    path: `/api/${apiPath}/admin/product`,
     src: (id) => `/api/${apiPath}/admin/product/${id}`,
     all: `/api/${apiPath}/admin/products/all`,
   },

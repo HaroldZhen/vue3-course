@@ -1,29 +1,30 @@
+/* global Vue */
 import '@/styles/index.scss';
 import { hexAxios, api } from './js/hexAxios';
 
-const app = {
-  loginForm: document.getElementById('form'),
-  saveCookie(token, expired) {
-    document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
-  },
-  login(evt) {
-    evt.preventDefault();
-    const data = {
-      username: evt.target.username.value,
-      password: evt.target.password.value,
+const App = {
+  data() {
+    return {
+      user: {
+        username: '',
+        password: '',
+      },
     };
-    hexAxios.post(api.signin, data).then((res) => {
-      const { success } = res.data;
-      if (success) {
-        const { token, expired } = res.data;
-        this.saveCookie(token, expired);
-        window.location.href = './dashborad/';
-      }
-    });
   },
-  init() {
-    this.loginForm.addEventListener('submit', this.login.bind(this));
+  methods: {
+    login() {
+      const data = { ...this.user };
+      hexAxios.post(api.signin, data).then((res) => {
+        const { success = false } = res.data;
+        if (success) {
+          this.saveCookie(res.data);
+          window.location.href = './dashborad/';
+        }
+      });
+    },
+    saveCookie({ token, expired }) {
+      document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
+    },
   },
 };
-
-app.init();
+Vue.createApp(App).mount('#app');
