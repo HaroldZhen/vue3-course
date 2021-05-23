@@ -31,12 +31,26 @@
                 <td>
                   <span class="badge mx-1" :class="tagColor(key)" v-for="(item,key) in product.category.split(',')">{{ item }}</span>
                 </td>
-                <td>{{ product.title }} {{ product.id }}</td>
+                <td>{{ product.title }}</td>
                 <td class="text-end">{{ product.origin_price }}</td>
                 <td class="text-end">{{ product.price }}</td>
                 <td>
-                  <span class="text-success" v-if="product.is_enabled">啟用</span>
-                  <span v-else>未啟用</span>
+                  <span class="text-success" v-if="product.is_enabled">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                      <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
+                      <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
+                    </svg>
+                    啟用</span
+                  >
+                  <span v-else>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                      />
+                    </svg>
+                    未啟用</span
+                  >
                 </td>
                 <td>
                   <div class="btn-group">
@@ -76,9 +90,6 @@
                     <input type="text" v-model="tempImage.url" class="form-control" placeholder="請輸入子圖片連結" />
                     <button class="btn btn-outline-primary" type="button" @click="addImage">新增</button>
                   </div>
-                  <!-- <div v-else>
-                    <button class="btn btn-outline-danger btn-sm d-block w-100" @click="tempProduct.imageUrl = ''">刪除圖片</button>
-                  </div> -->
                   <div class="row mt-2">
                     <template v-for="(imageItem, index) in tempProduct.imagesUrl">
                       <div class="col-4 mb-1 position-relative">
