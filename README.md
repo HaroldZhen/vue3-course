@@ -1,6 +1,6 @@
 # Vue 作品實戰班 - 2021夏季
 
-# 第二週 - RESTful API 串接
+# 第三週 - Vue.js 起步走
 
 ## 功能畫面
 
@@ -10,18 +10,12 @@
 
 ### 產品請單(Dashborad)
 網址: https://haroldzhen.github.io/vue3-course/dashborad
-![Dashborad](https://i.imgur.com/5Z21UqY.jpg)
+![Dashborad](https://i.imgur.com/skM36PB.jpg)
 
 
 ## 任務說明：
 
-第二週開始要接觸到課程的 API，是非常重要的一個章節，這份 API 會一直跟到直播班結束，同學們可用此份 API 建立屬於自己的電商資料，請務必在本週的時間內完成。
-
-## API 申請說明
-
-這個 API 與『 Vue 出一個電商網站』是同一個資料庫，因此若已經有帳號了，也可以登入該帳號並申請一個新的 API 路徑就好。
-
-若是還沒有帳號，就註冊一個來使用就可以哩～
+第三週開始我們會開始接觸 Vue.js，在此階段同學可多練習 Vue.js 的各項語法及指令，目標以串接 API 完成一頁式的產品新增、刪除、修改的頁面。
 
 ### 課程 API 相關網址：
 
@@ -32,13 +26,16 @@
 
 [登入頁面-頁面模板](https://codepen.io/hexschool/pen/poeJxXJ?editors=1010)
 
-[產品頁面-頁面模板](https://codepen.io/hexschool/pen/ExWjOYm?editors=1010)
+[產品頁面-頁面模板](https://codepen.io/hexschool/pen/vYxOVjd?editors=1000)
+
+### 使用 Vue 撰寫完成頁面功能
+
+呈現產品列表、新增產品、刪除產品、編輯產品功能
+產品啟用、關閉可以使用不同的顏色標示
 
 ## 提交難度挑戰：
 
-LV3：完成登入，利用自己建立的資料內容完整呈現在畫面列表以及刪除產品
-
-⭐️ 必須使用 this 運行
+LV3：後台登入頁面＋串接新增、刪除、編輯 API 完成頁面功能
 
 ⭐️ 繳交作業時不用附上帳號密碼，很重要！
 
