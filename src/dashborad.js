@@ -35,6 +35,7 @@ const App = {
   data() {
     return {
       productModal: '',
+      delProductModal: '',
       tempProduct: {},
       tempImage: {
         isEnable: false,
@@ -60,30 +61,42 @@ const App = {
       };
     },
     checkUser() {
-      hexAxios.post(api.check).then((res) => {
-        const { success } = res.data;
-        if (!success) {
-          window.location.href = './';
-        }
-      });
+      hexAxios
+        .post(api.check)
+        .then((res) => {
+          const { success } = res.data;
+          if (!success) {
+            window.location.href = './';
+          } else {
+            this.swaError({ title: res.data.message });
+          }
+        })
+        .catch((error) => {
+          this.swaError({ title: error.toString() });
+        });
     },
     getProduct() {
-      hexAxios.get(api.product.all).then((res) => {
-        const { success: isSuccess = false, products } = res.data;
-        if (isSuccess) {
-          this.products = Object.values(products).map((item) => item);
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1000,
-            icon: 'info',
-            title: '讀取產品',
-          });
-        } else {
-          this.swaError({ title: res.data.message });
-        }
-      });
+      hexAxios
+        .get(api.product.all)
+        .then((res) => {
+          const { success: isSuccess = false, products } = res.data;
+          if (isSuccess) {
+            this.products = Object.values(products).map((item) => item);
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1000,
+              icon: 'info',
+              title: '讀取產品',
+            });
+          } else {
+            this.swaError({ title: res.data.message });
+          }
+        })
+        .catch((error) => {
+          this.swaError({ title: error.toString() });
+        });
     },
     newOrUpdateProduct() {
       const data = {
@@ -102,35 +115,53 @@ const App = {
       this.productModal.hide();
     },
     addProducts(data) {
-      hexAxios.post(api.product.path, data).then((res) => {
-        const { success: isSuccess = false } = res.data;
-        if (isSuccess) {
-          this.swaAlert({ title: data.data.title });
-          this.getProduct();
-        } else {
-          this.swaError({ title: res.data.message });
-        }
-      });
+      hexAxios
+        .post(api.product.path, data)
+        .then((res) => {
+          const { success: isSuccess = false } = res.data;
+          if (isSuccess) {
+            this.swaAlert({ title: data.data.title });
+            this.getProduct();
+          } else {
+            this.swaError({ title: res.data.message });
+          }
+        })
+        .catch((error) => {
+          this.swaError({ title: error.toString() });
+        });
     },
     updateProduct(data) {
-      hexAxios.put(api.product.src(data.data.id), data).then((res) => {
-        const { success: isSuccess = false } = res.data;
-        if (isSuccess) {
-          this.swaAlert({ title: data.data.title, text: '更新成功' });
-          this.getProduct();
-        }
-      });
+      hexAxios
+        .put(api.product.src(data.data.id), data)
+        .then((res) => {
+          const { success: isSuccess = false } = res.data;
+          if (isSuccess) {
+            this.swaAlert({ title: data.data.title, text: '更新成功' });
+            this.getProduct();
+          } else {
+            this.swaError({ title: res.data.message });
+          }
+        })
+        .catch((error) => {
+          this.swaError({ title: error.toString() });
+        });
     },
     deleteProduct(id) {
-      hexAxios.delete(api.product.src(id)).then((res) => {
-        const { success: isSuccess = false } = res.data;
-        if (isSuccess) {
-          this.swaAlert({ title: '刪除成功', text: '' });
-          this.getProduct();
-        } else {
-          this.swaError({ title: res.data.message });
-        }
-      });
+      this.delProductModal.hide();
+      hexAxios
+        .delete(api.product.src(id))
+        .then((res) => {
+          const { success: isSuccess = false } = res.data;
+          if (isSuccess) {
+            this.swaAlert({ title: '刪除成功', text: '' });
+            this.getProduct();
+          } else {
+            this.swaError({ title: res.data.message });
+          }
+        })
+        .catch((error) => {
+          this.swaError({ title: error.toString() });
+        });
     },
     addImage() {
       const { imagesUrl = [] } = this.tempProduct;
@@ -152,6 +183,10 @@ const App = {
       this.tempProduct = { ...prodcut };
       this.productModal.show();
     },
+    deleteProductModal(prodcut) {
+      this.tempProduct = { ...prodcut };
+      this.delProductModal.show();
+    },
   },
   created() {
     this.tempProduct = this.defaultProduct();
@@ -161,6 +196,7 @@ const App = {
   },
   mounted() {
     this.productModal = new bootstrap.Modal(document.getElementById('productModal'));
+    this.delProductModal = new bootstrap.Modal(document.getElementById('delProductModal'));
   },
 };
 Vue.createApp(App).mount('#app');
