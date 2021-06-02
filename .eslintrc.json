@@ -5,7 +5,7 @@
       "error",
       {
         "ignoreUrls": true,
-        "code": 200
+        "code": 240
       }
     ],
     "prefer-template": "off",

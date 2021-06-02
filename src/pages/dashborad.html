@@ -62,9 +62,38 @@
             </template>
           </tbody>
         </table>
+        <pagination :pages="pages" :current-page="currentPage" @to-page="getProduct" v-if="pages.total_pages"></pagination>
       </div>
-
       <!-- Modal -->
+      <product-modal :temp-product="tempProduct" @add-image="addImage" @new-or-update-product="newOrUpdateProduct"></product-modal>
+      <delete-product-modal :temp-product="tempProduct" @delete-product="deleteProduct"></delete-product-modal>
+    </div>
+    <!-- -->
+    <!-- delProductModal -->
+    <script type="text/x-template" id="delModal">
+      <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1" aria-labelledby="delProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content border-0">
+            <div class="modal-header bg-danger text-white">
+              <h5 id="delProductModalLabel" class="modal-title">
+                <span>刪除產品</span>
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              是否刪除
+              <strong class="text-danger">{{ tempProduct.title }}</strong> 商品(刪除後將無法恢復)。
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-danger" @click="this.$emit('delete-product', tempProduct.id)">確認刪除</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+    <!-- productModal -->
+    <script type="text/x-template" id="prodModal">
       <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
           <div class="modal-content border-0">
@@ -153,32 +182,27 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-              <button type="button" class="btn btn-primary" @click="newOrUpdateProduct">確認</button>
+              <button type="button" class="btn btn-primary" @click="this.$emit('new-or-update-product', tempProduct)">確認</button>
             </div>
           </div>
         </div>
       </div>
-      <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1" aria-labelledby="delProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content border-0">
-            <div class="modal-header bg-danger text-white">
-              <h5 id="delProductModalLabel" class="modal-title">
-                <span>刪除產品</span>
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              是否刪除
-              <strong class="text-danger">{{ tempProduct.title }}</strong> 商品(刪除後將無法恢復)。
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-              <button type="button" class="btn btn-danger" @click="deleteProduct(tempProduct.id)">確認刪除</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Modal -->
-    </div>
+    </script>
+    <!-- bootstrap-pagination -->
+    <script type="text/x-template" id="pagination">
+      <nav aria-label="pagination">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" :disabled="pages.has_pre" :class="[ pages.has_pre ? '' : 'disabled' ]">
+            <a class="page-link" href="#" @click.prevent="toPage(pages.current_page - 1)">Previous</a>
+          </li>
+          <li class="page-item" v-for="n in pages.total_pages" :class="[ pages.current_page === n ? 'active' : '' ]">
+            <a class="page-link" href="#" @click.prevent="toPage(n)">{{ n }}</a>
+          </li>
+          <li class="page-item" :disabled="pages.has_next" :class="[ pages.has_next ? '' : 'disabled' ]">
+            <a class="page-link" href="#" @click.prevent="toPage(pages.current_page + 1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </script>
   </body>
 </html>

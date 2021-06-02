@@ -31,17 +31,60 @@ const utilitMethods = {
   },
 };
 
+const delModal = {
+  template: '#delModal',
+  props: ['tempProduct'],
+};
+
+const prodModal = {
+  template: '#prodModal',
+  props: ['tempProduct'],
+  data() {
+    return {
+      tempImage: {
+        isEnable: false,
+        url: '',
+      },
+    };
+  },
+  methods: {
+    addImage() {
+      this.$emit('add-image', this.tempImage);
+      this.tempImage = {
+        isEnable: false,
+        url: '',
+      };
+    },
+  },
+};
+
+const bsPagination = {
+  template: '#pagination',
+  props: ['pages', 'currentPage'],
+  methods: {
+    toPage(page) {
+      if (this.pages.current_page === page) {
+        return;
+      }
+      this.$emit('to-page', page);
+    },
+  },
+};
+
 const App = {
+  components: {
+    'product-modal': prodModal,
+    'delete-product-modal': delModal,
+    pagination: bsPagination,
+  },
   data() {
     return {
       productModal: '',
       delProductModal: '',
       tempProduct: {},
-      tempImage: {
-        isEnable: false,
-        url: '',
-      },
       products: [],
+      currentPage: 1,
+      pages: {},
     };
   },
   methods: {
@@ -75,13 +118,15 @@ const App = {
           this.swaError({ title: error.toString() });
         });
     },
-    getProduct() {
+    getProduct(page = 1) {
+      this.currentPage = page;
       hexAxios
-        .get(api.product.all)
+        .get(api.product.page(this.currentPage))
         .then((res) => {
-          const { success: isSuccess = false, products } = res.data;
+          const { success: isSuccess = false, products, pagination } = res.data;
           if (isSuccess) {
             this.products = Object.values(products).map((item) => item);
+            this.pages = { ...pagination };
             Swal.fire({
               toast: true,
               position: 'top-end',
@@ -98,13 +143,13 @@ const App = {
           this.swaError({ title: error.toString() });
         });
     },
-    newOrUpdateProduct() {
+    newOrUpdateProduct(tempProduct) {
       const data = {
         data: {
-          ...this.tempProduct,
-          price: parseInt(this.tempProduct.price, 10),
-          origin_price: parseInt(this.tempProduct.origin_price, 10),
-          is_enabled: this.tempProduct.is_enabled ? 1 : 0,
+          ...tempProduct,
+          price: parseInt(tempProduct.price, 10),
+          origin_price: parseInt(tempProduct.origin_price, 10),
+          is_enabled: tempProduct.is_enabled ? 1 : 0,
         },
       };
       if (data.data.id) {
@@ -129,6 +174,11 @@ const App = {
         .catch((error) => {
           this.swaError({ title: error.toString() });
         });
+    },
+    addImage(tempImage) {
+      const { imagesUrl = [] } = this.tempProduct;
+      imagesUrl.push(tempImage.url);
+      this.tempProduct.imagesUrl = imagesUrl;
     },
     updateProduct(data) {
       hexAxios
@@ -162,15 +212,6 @@ const App = {
         .catch((error) => {
           this.swaError({ title: error.toString() });
         });
-    },
-    addImage() {
-      const { imagesUrl = [] } = this.tempProduct;
-      imagesUrl.push(this.tempImage.url);
-      this.tempProduct.imagesUrl = imagesUrl;
-      this.tempImage = {
-        isEnable: false,
-        url: '',
-      };
     },
     deleteImage(index) {
       this.tempProduct.imagesUrl.splice(index, 1);

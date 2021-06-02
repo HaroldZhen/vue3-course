@@ -13,6 +13,7 @@ export const api = {
   product: {
     path: `/api/${apiPath}/admin/product`,
     src: (id) => `/api/${apiPath}/admin/product/${id}`,
+    page: (id) => `/api/${apiPath}/admin/products?page=${id}`,
     all: `/api/${apiPath}/admin/products/all`,
   },
 };
