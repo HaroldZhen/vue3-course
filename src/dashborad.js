@@ -1,75 +1,12 @@
 /* global Vue */
 import * as bootstrap from 'bootstrap';
 import '@/styles/dashborad.scss';
-import Swal from 'sweetalert2';
 import { hexAxios, api } from './js/hexAxios';
 import 'sweetalert2/src/sweetalert2.scss';
-
-const utilitMethods = {
-  tagColor(index) {
-    const color = ['bg-primary', 'bg-success', 'bg-danger', 'bg-warning text-dark', 'bg-info text-dark'];
-    return color[index % color.length];
-  },
-  swaAlert({ position = 'center', title = 'success!', text = '新增成功', icon = 'success', timer = 2000 } = {}) {
-    Swal.fire({
-      position,
-      title,
-      text,
-      icon,
-      timer,
-    });
-  },
-  swaError({ toast = false, position = 'center', title = 'title', icon = 'error', showCloseButton = true, showConfirmButton = false } = {}) {
-    Swal.fire({
-      toast,
-      position,
-      icon,
-      title,
-      showCloseButton,
-      showConfirmButton,
-    });
-  },
-};
-
-const delModal = {
-  template: '#delModal',
-  props: ['tempProduct'],
-};
-
-const prodModal = {
-  template: '#prodModal',
-  props: ['tempProduct'],
-  data() {
-    return {
-      tempImage: {
-        isEnable: false,
-        url: '',
-      },
-    };
-  },
-  methods: {
-    addImage() {
-      this.$emit('add-image', this.tempImage);
-      this.tempImage = {
-        isEnable: false,
-        url: '',
-      };
-    },
-  },
-};
-
-const bsPagination = {
-  template: '#pagination',
-  props: ['pages', 'currentPage'],
-  methods: {
-    toPage(page) {
-      if (this.pages.current_page === page) {
-        return;
-      }
-      this.$emit('to-page', page);
-    },
-  },
-};
+import delModal from './component/delProductModal';
+import prodModal from './component/productModal';
+import bsPagination from './component/pagination';
+import utilitMethods from './js/utilit';
 
 const App = {
   components: {
@@ -86,6 +23,16 @@ const App = {
       currentPage: 1,
       pages: {},
     };
+  },
+  created() {
+    const AUTH_TOKEN = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    hexAxios.defaults.headers.common.Authorization = AUTH_TOKEN;
+    this.tempProduct = this.defaultProduct();
+    this.getProduct();
+  },
+  mounted() {
+    this.productModal = new bootstrap.Modal(document.getElementById('productModal'));
+    this.delProductModal = new bootstrap.Modal(document.getElementById('delProductModal'));
   },
   methods: {
     ...utilitMethods,
@@ -118,8 +65,9 @@ const App = {
           this.swaError({ title: error.toString() });
         });
     },
-    getProduct(page = 1) {
-      this.currentPage = page;
+    getProduct() {
+      const { total_pages: totalPages = 5 } = this.pages;
+      this.currentPage = this.currentPage > totalPages ? totalPages : this.currentPage;
       hexAxios
         .get(api.product.page(this.currentPage))
         .then((res) => {
@@ -127,14 +75,7 @@ const App = {
           if (isSuccess) {
             this.products = Object.values(products).map((item) => item);
             this.pages = { ...pagination };
-            Swal.fire({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 1000,
-              icon: 'info',
-              title: '讀取產品',
-            });
+            this.swaInfo({ title: '讀取產品' });
           } else {
             this.swaError({ title: res.data.message });
           }
@@ -228,16 +169,10 @@ const App = {
       this.tempProduct = { ...prodcut };
       this.delProductModal.show();
     },
-  },
-  created() {
-    this.tempProduct = this.defaultProduct();
-    const AUTH_TOKEN = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-    hexAxios.defaults.headers.common.Authorization = AUTH_TOKEN;
-    this.getProduct();
-  },
-  mounted() {
-    this.productModal = new bootstrap.Modal(document.getElementById('productModal'));
-    this.delProductModal = new bootstrap.Modal(document.getElementById('delProductModal'));
+    toPage(page) {
+      this.currentPage = page;
+      this.getProduct();
+    },
   },
 };
 Vue.createApp(App).mount('#app');

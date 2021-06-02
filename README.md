@@ -1,6 +1,6 @@
 # Vue 作品實戰班 - 2021夏季
 
-# 第三週 - Vue.js 起步走
+# 第四週 - 元件化
 
 ## 功能畫面
 
@@ -10,12 +10,12 @@
 
 ### 產品請單(Dashborad)
 網址: https://haroldzhen.github.io/vue3-course/dashborad
-![Dashborad](https://i.imgur.com/skM36PB.jpg)
+![Dashborad](https://i.imgur.com/MdBzUut.jpg)
 
 
 ## 任務說明：
 
-第三週開始我們會開始接觸 Vue.js，在此階段同學可多練習 Vue.js 的各項語法及指令，目標以串接 API 完成一頁式的產品新增、刪除、修改的頁面。
+第四週將會結合二、三週，將課程的 API 結合 Vue 的介面進行開發。
 
 ### 課程 API 相關網址：
 
@@ -28,14 +28,20 @@
 
 [產品頁面-頁面模板](https://codepen.io/hexschool/pen/vYxOVjd?editors=1000)
 
-### 使用 Vue 撰寫完成頁面功能
+### 元件化
+- 新增產品、編輯產品Modal `src/component/productModal.js`
+- 刪除Modal `src/component/delProductModal.js`
+- 分頁 `src/component/pagination.js`
 
-呈現產品列表、新增產品、刪除產品、編輯產品功能
-產品啟用、關閉可以使用不同的顏色標示
+### 依據使用者需求完成此範例：
+
+將後台頁面 Modal 以及分頁改使用元件
+使用 import module 來引入元件（分頁元件）
+完成登入頁面
 
 ## 提交難度挑戰：
 
-LV3：後台登入頁面＋串接新增、刪除、編輯 API 完成頁面功能
+LV2：套用兩個元件
 
 ⭐️ 繳交作業時不用附上帳號密碼，很重要！
 
