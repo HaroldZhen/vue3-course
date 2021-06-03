@@ -1,5 +1,4 @@
 /* global Vue */
-import * as bootstrap from 'bootstrap';
 import '@/styles/dashborad.scss';
 import { hexAxios, api } from './js/hexAxios';
 import 'sweetalert2/src/sweetalert2.scss';
@@ -16,8 +15,8 @@ const App = {
   },
   data() {
     return {
-      productModal: '',
-      delProductModal: '',
+      showProductModal: false,
+      showDelProductModal: false,
       tempProduct: {},
       products: [],
       currentPage: 1,
@@ -29,10 +28,6 @@ const App = {
     hexAxios.defaults.headers.common.Authorization = AUTH_TOKEN;
     this.tempProduct = this.defaultProduct();
     this.getProduct();
-  },
-  mounted() {
-    this.productModal = new bootstrap.Modal(document.getElementById('productModal'));
-    this.delProductModal = new bootstrap.Modal(document.getElementById('delProductModal'));
   },
   methods: {
     ...utilitMethods,
@@ -98,7 +93,6 @@ const App = {
       } else {
         this.addProducts(data);
       }
-      this.productModal.hide();
     },
     addProducts(data) {
       hexAxios
@@ -138,7 +132,7 @@ const App = {
         });
     },
     deleteProduct(id) {
-      this.delProductModal.hide();
+      this.showDelProductModal = false;
       hexAxios
         .delete(api.product.src(id))
         .then((res) => {
@@ -159,19 +153,22 @@ const App = {
     },
     newProductModal() {
       this.tempProduct = this.defaultProduct();
-      this.productModal.show();
+      this.showProductModal = true;
     },
     editProductModal(prodcut) {
       this.tempProduct = { ...prodcut };
-      this.productModal.show();
+      this.showProductModal = true;
     },
     deleteProductModal(prodcut) {
       this.tempProduct = { ...prodcut };
-      this.delProductModal.show();
+      this.showDelProductModal = true;
     },
     toPage(page) {
       this.currentPage = page;
       this.getProduct();
+    },
+    hideModal(modalName) {
+      this[modalName] = false;
     },
   },
 };

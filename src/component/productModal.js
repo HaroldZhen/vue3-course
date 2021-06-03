@@ -1,10 +1,44 @@
+import * as bootstrap from 'bootstrap';
+
 export default {
+  props: ['tempProduct', 'showModalName'],
+  emits: ['delete-product', 'hide-modal'],
+  data() {
+    return {
+      product: this.tempProduct,
+      tempImage: {
+        isEnable: false,
+        url: '',
+      },
+      modalDom: '',
+    };
+  },
+  mounted() {
+    const modalDom = document.getElementById('productModal');
+    this.modalDom = new bootstrap.Modal(modalDom);
+    this.modalDom.show();
+    modalDom.addEventListener('hidden.bs.modal', () => {
+      this.$emit('hide-modal', this.showModalName);
+    });
+  },
+  unmounted() {
+    this.modalDom.hide();
+  },
+  methods: {
+    addImage() {
+      this.$emit('add-image', this.tempImage);
+      this.tempImage = {
+        isEnable: false,
+        url: '',
+      };
+    },
+  },
   template: `<div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content border-0">
       <div class="modal-header bg-dark text-white">
         <h5 id="productModalLabel" class="modal-title">
-          <span v-if="tempProduct.id">編輯產品:{{ tempProduct.title }}</span>
+          <span v-if="product.id">編輯產品:{{ product.title }}</span>
           <span v-else>新增產品</span>
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -15,9 +49,9 @@ export default {
             <div class="mb-1">
               <div class="form-group">
                 <label class="h5" for="imageUrl">輸入圖片網址</label>
-                <input type="text" class="form-control" id="imageUrl" v-model="tempProduct.imageUrl" placeholder="請輸入圖片連結" />
+                <input type="text" class="form-control" id="imageUrl" v-model="product.imageUrl" placeholder="請輸入圖片連結" />
               </div>
-              <img class="img-fluid" :src="tempProduct.imageUrl" alt="主圖片" />
+              <img class="img-fluid" :src="product.imageUrl" alt="主圖片" />
             </div>
             <label for="tempImages" class="h5">輸入子圖片網址</label>
             <div class="input-group">
@@ -25,7 +59,7 @@ export default {
               <button class="btn btn-outline-primary" type="button" @click="addImage">新增</button>
             </div>
             <div class="row mt-2">
-              <template v-for="(imageItem, index) in tempProduct.imagesUrl">
+              <template v-for="(imageItem, index) in product.imagesUrl">
                 <div class="col-4 mb-1 position-relative">
                   <a class="del-icon text-danger stretched-link" href="#" @click="deleteImage(index)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
@@ -42,43 +76,43 @@ export default {
           <div class="col-sm-8">
             <div class="form-group">
               <label for="title">標題</label>
-              <input id="title" type="text" class="form-control" v-model="tempProduct.title" placeholder="請輸入標題" />
+              <input id="title" type="text" class="form-control" v-model="product.title" placeholder="請輸入標題" />
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label for="category">分類</label>
-                <input id="category" type="text" class="form-control" v-model="tempProduct.category" placeholder="請輸入分類" />
+                <input id="category" type="text" class="form-control" v-model="product.category" placeholder="請輸入分類" />
               </div>
               <div class="form-group col-md-6">
                 <label for="price">單位</label>
-                <input id="unit" type="text" class="form-control" v-model="tempProduct.unit" placeholder="請輸入單位" />
+                <input id="unit" type="text" class="form-control" v-model="product.unit" placeholder="請輸入單位" />
               </div>
             </div>
 
             <div class="row">
               <div class="form-group col-md-6">
                 <label for="origin_price">原價</label>
-                <input id="origin_price" type="number" min="0" v-model="tempProduct.origin_price" class="form-control" placeholder="請輸入原價" />
+                <input id="origin_price" type="number" min="0" v-model="product.origin_price" class="form-control" placeholder="請輸入原價" />
               </div>
               <div class="form-group col-md-6">
                 <label for="price">售價</label>
-                <input id="price" type="number" min="0" v-model="tempProduct.price" class="form-control" placeholder="請輸入售價" />
+                <input id="price" type="number" min="0" v-model="product.price" class="form-control" placeholder="請輸入售價" />
               </div>
             </div>
             <hr />
 
             <div class="form-group">
               <label for="description">產品描述</label>
-              <textarea id="description" type="text" class="form-control" v-model="tempProduct.description" placeholder="請輸入產品描述"> </textarea>
+              <textarea id="description" type="text" class="form-control" v-model="product.description" placeholder="請輸入產品描述"> </textarea>
             </div>
             <div class="form-group">
               <label for="content">說明內容</label>
-              <textarea id="content" type="text" class="form-control" v-model="tempProduct.content" placeholder="請輸入說明內容"> </textarea>
+              <textarea id="content" type="text" class="form-control" v-model="product.content" placeholder="請輸入說明內容"> </textarea>
             </div>
             <div class="form-group">
               <div class="form-check">
-                <input id="is_enabled" class="form-check-input" type="checkbox" v-model="tempProduct.is_enabled" :true-value="1" :false-value="0" />
+                <input id="is_enabled" class="form-check-input" type="checkbox" v-model="product.is_enabled" :true-value="1" :false-value="0" />
                 <label class="form-check-label" for="is_enabled">是否啟用</label>
               </div>
             </div>
@@ -87,27 +121,9 @@ export default {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" @click="this.$emit('new-or-update-product', tempProduct)">確認</button>
+        <button type="button" class="btn btn-primary" @click="this.$emit('new-or-update-product', product);this.modalDom.hide();">確認</button>
       </div>
     </div>
   </div>
 </div>`,
-  props: ['tempProduct'],
-  data() {
-    return {
-      tempImage: {
-        isEnable: false,
-        url: '',
-      },
-    };
-  },
-  methods: {
-    addImage() {
-      this.$emit('add-image', this.tempImage);
-      this.tempImage = {
-        isEnable: false,
-        url: '',
-      };
-    },
-  },
 };

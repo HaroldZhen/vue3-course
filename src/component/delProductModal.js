@@ -1,4 +1,25 @@
+import * as bootstrap from 'bootstrap';
+
 export default {
+  props: ['tempProduct', 'showModalName'],
+  emits: ['delete-product', 'hide-modal'],
+  data() {
+    return {
+      product: this.tempProduct,
+      modalDom: '',
+    };
+  },
+  mounted() {
+    const modalDom = document.getElementById('delProductModal');
+    this.modalDom = new bootstrap.Modal(modalDom);
+    this.modalDom.show();
+    modalDom.addEventListener('hidden.bs.modal', () => {
+      this.$emit('hide-modal', this.showModalName);
+    });
+  },
+  unmounted() {
+    this.modalDom.hide();
+  },
   template: `<div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1" aria-labelledby="delProductModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content border-0">
@@ -10,14 +31,13 @@ export default {
       </div>
       <div class="modal-body">
         是否刪除
-        <strong class="text-danger">{{ tempProduct.title }}</strong> 商品(刪除後將無法恢復)。
+        <strong class="text-danger">{{ product.title }}</strong> 商品(刪除後將無法恢復)。
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-danger" @click="this.$emit('delete-product', tempProduct.id)">確認刪除</button>
+        <button type="button" class="btn btn-danger" @click="this.$emit('delete-product', product.id)">確認刪除</button>
       </div>
     </div>
   </div>
 </div>`,
-  props: ['tempProduct'],
 };

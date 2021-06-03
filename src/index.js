@@ -1,6 +1,8 @@
 /* global Vue */
 import '@/styles/index.scss';
 import { hexAxios, api } from './js/hexAxios';
+import 'sweetalert2/src/sweetalert2.scss';
+import utilitMethods from './js/utilit';
 
 /**
  * 登入元件 Login From Component
@@ -40,6 +42,7 @@ const App = {
     };
   },
   methods: {
+    ...utilitMethods,
     /**
      * 接收元件資訊
      * @param {Object} userData 登入資訊
@@ -60,6 +63,8 @@ const App = {
         if (success) {
           this.saveCookie(res.data);
           window.location.href = './dashborad/';
+        } else {
+          this.swaError({ title: res.data.message });
         }
       });
     },

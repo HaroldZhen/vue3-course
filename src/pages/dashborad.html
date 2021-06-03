@@ -65,8 +65,15 @@
         <pagination :pages="pages" :current-page="currentPage" @to-page="toPage" v-if="pages.total_pages"></pagination>
       </div>
       <!-- Modal -->
-      <product-modal :temp-product="tempProduct" @add-image="addImage" @new-or-update-product="newOrUpdateProduct"></product-modal>
-      <delete-product-modal :temp-product="tempProduct" @delete-product="deleteProduct"></delete-product-modal>
+      <product-modal
+        v-if="showProductModal"
+        show-modal-name="showProductModal"
+        :temp-product="tempProduct"
+        @add-image="addImage"
+        @new-or-update-product="newOrUpdateProduct"
+        @hide-modal="hideModal"
+      ></product-modal>
+      <delete-product-modal v-if="showDelProductModal" show-modal-name="showDelProductModal" :temp-product="tempProduct" @delete-product="deleteProduct" @hide-modal="hideModal"></delete-product-modal>
     </div>
   </body>
 </html>

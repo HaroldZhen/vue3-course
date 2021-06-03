@@ -1,4 +1,13 @@
 export default {
+  props: ['pages', 'currentPage'],
+  methods: {
+    toPage(page) {
+      if (this.pages.current_page === page) {
+        return;
+      }
+      this.$emit('to-page', page);
+    },
+  },
   template: `<nav aria-label="pagination">
   <ul class="pagination justify-content-center">
     <li class="page-item" :disabled="pages.has_pre" :class="[ pages.has_pre ? '' : 'disabled' ]">
@@ -12,13 +21,4 @@ export default {
     </li>
   </ul>
 </nav>`,
-  props: ['pages', 'currentPage'],
-  methods: {
-    toPage(page) {
-      if (this.pages.current_page === page) {
-        return;
-      }
-      this.$emit('to-page', page);
-    },
-  },
 };
