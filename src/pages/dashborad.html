@@ -72,6 +72,7 @@
         @add-image="addImage"
         @new-or-update-product="newOrUpdateProduct"
         @hide-modal="hideModal"
+        @delete-image="deleteImage"
       ></product-modal>
       <delete-product-modal v-if="showDelProductModal" show-modal-name="showDelProductModal" :temp-product="tempProduct" @delete-product="deleteProduct" @hide-modal="hideModal"></delete-product-modal>
     </div>

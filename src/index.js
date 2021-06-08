@@ -58,15 +58,20 @@ const App = {
      */
     login() {
       const data = { ...this.user };
-      hexAxios.post(api.signin, data).then((res) => {
-        const { success = false } = res.data;
-        if (success) {
-          this.saveCookie(res.data);
-          window.location.href = './dashborad/';
-        } else {
-          this.swaError({ title: res.data.message });
-        }
-      });
+      hexAxios
+        .post(api.signin, data)
+        .then((res) => {
+          const { success = false } = res.data;
+          if (success) {
+            this.saveCookie(res.data);
+            window.location.href = './dashborad/';
+          } else {
+            this.swaError({ title: res.data.message });
+          }
+        })
+        .catch((error) => {
+          this.swaError({ title: error.toString() });
+        });
     },
     /**
      * 儲存Cookie

@@ -24,41 +24,36 @@ const App = {
     };
   },
   created() {
-    const AUTH_TOKEN = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-    hexAxios.defaults.headers.common.Authorization = AUTH_TOKEN;
+    const authTOKEN = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    hexAxios.defaults.headers.common.Authorization = authTOKEN;
     this.tempProduct = this.defaultProduct();
-    this.getProduct();
+    if (this.checkUser()) {
+      this.getProduct();
+    }
   },
   methods: {
     ...utilitMethods,
     defaultProduct() {
       return {
-        title: '',
-        category: '',
-        unit: '',
-        origin_price: 0,
-        price: 0,
-        description: '',
-        content: '',
-        is_enabled: 0,
-        imageUrl: '',
         imagesUrl: [],
       };
     },
-    checkUser() {
-      hexAxios
+    async checkUser() {
+      let isLogin = false;
+      await hexAxios
         .post(api.check)
         .then((res) => {
           const { success } = res.data;
-          if (!success) {
-            window.location.href = './';
+          if (success) {
+            isLogin = true;
           } else {
-            this.swaError({ title: res.data.message });
+            window.location.href = './';
           }
         })
         .catch((error) => {
           this.swaError({ title: error.toString() });
         });
+      return isLogin;
     },
     getProduct() {
       const { total_pages: totalPages = 5 } = this.pages;
@@ -83,8 +78,8 @@ const App = {
       const data = {
         data: {
           ...tempProduct,
-          price: parseInt(tempProduct.price, 10),
-          origin_price: parseInt(tempProduct.origin_price, 10),
+          price: tempProduct.price,
+          origin_price: tempProduct.origin_price,
           is_enabled: tempProduct.is_enabled ? 1 : 0,
         },
       };
