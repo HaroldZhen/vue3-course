@@ -17,3 +17,17 @@ export const api = {
     all: `/api/${apiPath}/admin/products/all`,
   },
 };
+
+export const userAPI = {
+  product: {
+    page: (id = 1) => `/api/${apiPath}/products?page=${id}`, // GET
+    sigle: (id) => `/api/${apiPath}/product/${id}`, // GET
+    all: () => `/api/${apiPath}/products/all`, // GET
+  },
+  cart: {
+    src: () => `/api/${apiPath}/cart`,
+    delete: (id) => `/api/${apiPath}/cart/${id}`, // DETEL
+    list: () => `/api/${apiPath}/cart`, // GET
+    deleteAll: () => `/api/${apiPath}/carts`, // DETEL
+  },
+};

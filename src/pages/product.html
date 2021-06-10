@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="container pt-3">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">產品 Product</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="carts-tab" data-bs-toggle="tab" data-bs-target="#carts" type="button" role="tab" aria-controls="carts" aria-selected="false">
+              購物車 Carts <span class="badge rounded-pill bg-success">{{ carts.carts.length }}</span>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="customer-tab" data-bs-toggle="tab" data-bs-target="#customer" type="button" role="tab" aria-controls="customer" aria-selected="false">
+              顧客資料 Customer
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="mt-4">
+              <!-- 產品列表 -->
+              <table class="table align-middle">
+                <thead>
+                  <tr>
+                    <th>圖片</th>
+                    <th>商品名稱</th>
+                    <th>價格</th>
+                    <th>功能</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template v-for="item in products">
+                    <tr>
+                      <td style="width: 200px">
+                        <div style="height: 100px; background-size: cover; background-position: center" :style="{backgroundImage: `url(${item.imageUrl})`}"></div>
+                      </td>
+                      <td>{{ item.title }}</td>
+                      <td>
+                        <div class="h5">{{ item.price }} 元</div>
+                      </td>
+                      <td>
+                        <div class="btn-group btn-group-sm">
+                          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#productModal" @click="getSignProduct(item.id)">查看更多</button>
+                          <button type="button" class="btn btn-outline-danger" @click.prevent="addCart(item.id)">加到購物車</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+              <!-- 產品分頁 -->
+              <pagination :pages="pages" :current-page="currentPage" @to-page="toPage" v-if="pages.total_pages"></pagination>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="carts" role="tabpanel" aria-labelledby="carts-tab">
+            <!-- 購物車列表 -->
+            <div class="text-end">
+              <button class="btn btn-outline-danger" type="button" @click="emptyCart">清空購物車</button>
+            </div>
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>品名</th>
+                  <th style="width: 150px">數量/單位</th>
+                  <th>單價</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-for="item in carts.carts">
+                  <tr>
+                    <td>
+                      <button type="button" class="btn btn-outline-danger btn-sm" @click="delCart(item.id)">x</button>
+                    </td>
+                    <td>
+                      {{ item.product.title}}
+                      <div class="text-success" v-if="(carts.total - carts.final_total) > 0">已套用優惠券</div>
+                    </td>
+                    <td>
+                      <div class="input-group input-group-sm">{{ item.qty }} / {{ item.product.unit }}</div>
+                    </td>
+                    <td class="text-end">
+                      <small class="text-success" v-if="item.coupon">折扣價：</small>
+                      {{ item.final_total }}
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3" class="text-end">總計</td>
+                  <td class="text-end">{{ carts.final_total }}</td>
+                </tr>
+                <template v-if="(carts.total - carts.final_total) > 0">
+                  <tr>
+                    <td colspan="3" class="text-end text-success">折扣價</td>
+                    <td class="text-end text-success">{{ calDiscount(carts.total, carts.final_total) }}</td>
+                  </tr>
+                </template>
+              </tfoot>
+            </table>
+          </div>
+          <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
+            <div class="my-5 row justify-content-center">
+              <form class="col-md-6">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input id="email" name="email" type="email" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                  <label for="name" class="form-label">收件人姓名</label>
+                  <input id="name" name="姓名" type="text" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                  <label for="tel" class="form-label">收件人電話</label>
+                  <input id="tel" name="電話" type="text" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                  <label for="address" class="form-label">收件人地址</label>
+                  <input id="address" name="地址" type="text" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                  <label for="message" class="form-label">留言</label>
+                  <textarea name="" id="message" class="form-control" cols="30" rows="10"></textarea>
+                </div>
+                <div class="text-end">
+                  <button type="submit" class="btn btn-danger">送出訂單</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ref="modal">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content border-0">
+            <div class="modal-header bg-dark text-white">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <span>{{ tempProduct.title }}</span>
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <img class="img-fluid" :src="tempProduct.imageUrl" :alt="tempProduct.title" />
+                </div>
+                <div class="col-sm-6">
+                  <span class="badge bg-primary rounded-pill">{{ tempProduct.category }}</span>
+                  <p>商品描述：{{ tempProduct.description }}</p>
+                  <p>商品內容：{{ tempProduct.content }}</p>
+
+                  <del class="h6">原價 {{ tempProduct.origin_price }} 元</del>
+                  <div class="h5">現在只要 {{ tempProduct.price }} 元</div>
+                  <div>
+                    <div class="input-group">
+                      <input type="number" class="form-control" v-model.number="tempProduct.qty" min="1" />
+                      <button type="button" class="btn btn-primary" @click.prevent="addCart(tempProduct.id, tempProduct.qty);productModal.hide();">加入購物車</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

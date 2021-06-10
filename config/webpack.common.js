@@ -12,6 +12,7 @@ module.exports = {
   entry: {
     main: paths.src + '/index.js',
     dashborad: paths.src + '/dashborad.js',
+    product: paths.src + '/product.js',
   },
 
   // Where webpack outputs the assets and bundles
@@ -55,6 +56,13 @@ module.exports = {
       template: paths.src + '/pages/dashborad.html', // dashborad
       filename: 'dashborad/index.html', // output file
       chunks: ['dashborad'],
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Product',
+      favicon: paths.src + '/images/favicon.png',
+      template: paths.src + '/pages/product.html', // product
+      filename: 'product.html', // output file
+      chunks: ['product'],
     }),
 
     // ESLint configuration
