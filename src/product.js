@@ -48,6 +48,7 @@ const App = {
     ...utilitMethods,
     useCoupon() {
       if (!this.couponCode) {
+        this.swaError({ title: '請輸入優惠碼' });
         return;
       }
       const data = {
@@ -191,6 +192,10 @@ const App = {
     },
     onSubmit(values, { resetForm }) {
       console.log(values);
+      if (!this.carts.carts.length) {
+        this.swaError({ title: '購物車是空的唷！' });
+        return;
+      }
       const data = {
         data: {
           ...this.formData,
@@ -216,7 +221,6 @@ const App = {
         .catch((error) => {
           this.swaError({ title: error.toString() });
         });
-      return '';
     },
   },
   created() {
