@@ -30,4 +30,10 @@ export const userAPI = {
     list: () => `/api/${apiPath}/cart`, // GET
     deleteAll: () => `/api/${apiPath}/carts`, // DETEL
   },
+  order: {
+    src: () => `/api/${apiPath}/order`,
+  },
+  coupon: {
+    src: () => `/api/${apiPath}/coupon`, // POST
+  },
 };

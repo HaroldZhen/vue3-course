@@ -1,4 +1,4 @@
-/* global Vue */
+/* global Vue, VeeValidate, VeeValidateRules, VeeValidateI18n */
 import '@/styles/dashborad.scss';
 import * as bootstrap from 'bootstrap';
 import { hexAxios, userAPI } from './js/hexAxios';
@@ -6,12 +6,27 @@ import 'sweetalert2/src/sweetalert2.scss';
 import utilitMethods from './js/utilit';
 import bsPagination from './component/pagination';
 
+Object.keys(VeeValidateRules).forEach((rule) => {
+  if (rule !== 'default') {
+    VeeValidate.defineRule(rule, VeeValidateRules[rule]);
+  }
+});
+
+VeeValidateI18n.loadLocaleFromURL('https://unpkg.com/@vee-validate/i18n@4.1.0/dist/locale/zh_TW.json');
+
+// Activate the locale
+VeeValidate.configure({
+  generateMessage: VeeValidateI18n.localize('zh_TW'),
+  validateOnInput: true, // 調整為輸入字元立即進行驗證
+});
+
 const App = {
   components: {
     pagination: bsPagination,
   },
   data() {
     return {
+      firstTab: '',
       productModal: '',
       products: [],
       tempProduct: {
@@ -19,11 +34,49 @@ const App = {
       },
       currentPage: 1,
       pages: {},
-      carts: {},
+      couponCode: '',
+      carts: {
+        carts: [],
+      },
+      formData: {
+        user: {},
+        message: '',
+      },
     };
   },
   methods: {
     ...utilitMethods,
+    useCoupon() {
+      if (!this.couponCode) {
+        return;
+      }
+      const data = {
+        data: {
+          code: this.couponCode,
+        },
+      };
+      hexAxios
+        .post(userAPI.coupon.src(), data)
+        .then((res) => {
+          const { success, message } = res.data;
+          if (success) {
+            this.swaAlert({ title: message, text: '' });
+          } else {
+            this.swaError({ title: message });
+          }
+        })
+        .then(() => {
+          this.getCart();
+        })
+        .catch((error) => {
+          this.swaError({ title: error.toString() });
+        });
+      this.couponCode = '';
+    },
+    isPhone(value) {
+      const phoneNumber = /^(09)[0-9]{8}$/;
+      return phoneNumber.test(value) ? true : '需要正確的電話號碼';
+    },
     getProduct() {
       hexAxios
         .get(userAPI.product.page(this.currentPage))
@@ -46,7 +99,6 @@ const App = {
         .get(userAPI.product.sigle(pid))
         .then((res) => {
           const { success, product, message } = res.data;
-          console.log(product);
           if (success) {
             this.tempProduct = {
               ...product,
@@ -64,7 +116,6 @@ const App = {
       hexAxios
         .get(userAPI.cart.list())
         .then((res) => {
-          console.log(res.data);
           const { success, data, message } = res.data;
           if (success) {
             this.carts = data;
@@ -86,7 +137,6 @@ const App = {
       hexAxios
         .post(userAPI.cart.src(), data)
         .then((res) => {
-          console.log(res.data);
           const { success, message } = res.data;
           if (success) {
             this.swaAlert({ title: message });
@@ -105,7 +155,6 @@ const App = {
       hexAxios
         .delete(userAPI.cart.delete(pid))
         .then((res) => {
-          console.log(res.data);
           const { success, message } = res.data;
           if (success) {
             this.swaAlert({ title: message, text: '' });
@@ -122,7 +171,6 @@ const App = {
       hexAxios
         .delete(userAPI.cart.deleteAll())
         .then((res) => {
-          console.log(res.data);
           const { success, message } = res.data;
           if (success) {
             this.swaAlert({ title: message, text: '' });
@@ -141,6 +189,35 @@ const App = {
     calDiscount(price, newPrice = 0) {
       return Number.parseInt(price, 10) - Number.parseInt(newPrice, 10);
     },
+    onSubmit(values, { resetForm }) {
+      console.log(values);
+      const data = {
+        data: {
+          ...this.formData,
+        },
+      };
+      hexAxios
+        .post(userAPI.order.src(), data)
+        .then((res) => {
+          const { success, message, orderId } = res.data;
+          if (success) {
+            this.swaAlert({ title: message, text: `訂單ID:${orderId}` });
+          } else {
+            this.swaError({ title: message });
+          }
+        })
+        .then(() => {
+          this.getCart();
+          this.formData.user = {};
+          this.formData.message = '';
+          resetForm();
+          this.firstTab.show();
+        })
+        .catch((error) => {
+          this.swaError({ title: error.toString() });
+        });
+      return '';
+    },
   },
   created() {
     this.getProduct();
@@ -149,7 +226,13 @@ const App = {
   mounted() {
     const modalDom = document.getElementById('productModal');
     this.productModal = new bootstrap.Modal(modalDom);
+    const tabDom = document.querySelector('#myTab li:first-child button');
+    this.firstTab = new bootstrap.Tab(tabDom);
   },
 };
 
-Vue.createApp(App).mount('#app');
+Vue.createApp(App)
+  .component('VForm', VeeValidate.Form)
+  .component('VField', VeeValidate.Field)
+  .component('ErrorMessage', VeeValidate.ErrorMessage)
+  .mount('#app');

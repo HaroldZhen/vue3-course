@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= htmlWebpackPlugin.options.title %></title>
     <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.1.17/vee-validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.1.17/dist/vee-validate-i18n.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/rules@4.1.17/dist/vee-validate-rules.min.js"></script>
   </head>
 
   <body>
@@ -13,15 +16,44 @@
       <div class="container pt-3">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">產品 Product</button>
+            <button
+              class="nav-link active"
+              id="home-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#home"
+              type="button"
+              role="tab"
+              aria-controls="home"
+              aria-selected="true"
+            >
+              產品 Product
+            </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="carts-tab" data-bs-toggle="tab" data-bs-target="#carts" type="button" role="tab" aria-controls="carts" aria-selected="false">
+            <button
+              class="nav-link"
+              id="carts-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#carts"
+              type="button"
+              role="tab"
+              aria-controls="carts"
+              aria-selected="false"
+            >
               購物車 Carts <span class="badge rounded-pill bg-success">{{ carts.carts.length }}</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="customer-tab" data-bs-toggle="tab" data-bs-target="#customer" type="button" role="tab" aria-controls="customer" aria-selected="false">
+            <button
+              class="nav-link"
+              id="customer-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#customer"
+              type="button"
+              role="tab"
+              aria-controls="customer"
+              aria-selected="false"
+            >
               顧客資料 Customer
             </button>
           </li>
@@ -43,7 +75,10 @@
                   <template v-for="item in products">
                     <tr>
                       <td style="width: 200px">
-                        <div style="height: 100px; background-size: cover; background-position: center" :style="{backgroundImage: `url(${item.imageUrl})`}"></div>
+                        <div
+                          style="height: 100px; background-size: cover; background-position: center"
+                          :style="{backgroundImage: `url(${item.imageUrl})`}"
+                        ></div>
                       </td>
                       <td>{{ item.title }}</td>
                       <td>
@@ -51,7 +86,15 @@
                       </td>
                       <td>
                         <div class="btn-group btn-group-sm">
-                          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#productModal" @click="getSignProduct(item.id)">查看更多</button>
+                          <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#productModal"
+                            @click="getSignProduct(item.id)"
+                          >
+                            查看更多
+                          </button>
                           <button type="button" class="btn btn-outline-danger" @click.prevent="addCart(item.id)">加到購物車</button>
                         </div>
                       </td>
@@ -65,9 +108,23 @@
           </div>
           <div class="tab-pane fade" id="carts" role="tabpanel" aria-labelledby="carts-tab">
             <!-- 購物車列表 -->
-            <div class="text-end">
-              <button class="btn btn-outline-danger" type="button" @click="emptyCart">清空購物車</button>
+            <div class="row">
+              <div class="col-auto ms-auto">
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="請輸入優惠卷:test0630"
+                    v-model="couponCode"
+                    aria-label="coupon code"
+                    aria-describedby="couponBtn"
+                  />
+                  <button class="btn btn-outline-success" type="button" id="couponBtn" @click="useCoupon">送出</button>
+                </div>
+              </div>
+              <div class="col-auto"><button class="btn btn-outline-danger" type="button" @click="emptyCart">清空購物車</button></div>
             </div>
+
             <table class="table align-middle">
               <thead>
                 <tr>
@@ -113,35 +170,71 @@
           </div>
           <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
             <div class="my-5 row justify-content-center">
-              <form class="col-md-6">
+              <v-form class="col-md-6" v-slot="{ errors }" @submit="onSubmit" :validation-schema="schema">
                 <div class="mb-3">
                   <label for="email" class="form-label">Email</label>
-                  <input id="email" name="email" type="email" class="form-control" />
+                  <v-field
+                    id="email"
+                    name="email"
+                    type="email"
+                    class="form-control"
+                    :class="{ 'is-invalid': errors['email'] }"
+                    placeholder="請輸入 Email"
+                    rules="email|required"
+                    v-model="formData.user.email"
+                  ></v-field>
+                  <error-message name="email" class="invalid-feedback"></error-message>
                 </div>
-
                 <div class="mb-3">
-                  <label for="name" class="form-label">收件人姓名</label>
-                  <input id="name" name="姓名" type="text" class="form-control" />
+                  <label for="email" class="form-label">收件人姓名</label>
+                  <v-field
+                    id="name"
+                    name="name"
+                    type="text"
+                    class="form-control"
+                    :class="{ 'is-invalid': errors['name'] }"
+                    placeholder="請輸入姓名"
+                    rules="required"
+                    v-model="formData.user.name"
+                  ></v-field>
+                  <error-message name="name" class="invalid-feedback"></error-message>
                 </div>
-
                 <div class="mb-3">
                   <label for="tel" class="form-label">收件人電話</label>
-                  <input id="tel" name="電話" type="text" class="form-control" />
+                  <v-field
+                    id="tel"
+                    name="tel"
+                    type="text"
+                    class="form-control"
+                    :class="{ 'is-invalid': errors['tel'] }"
+                    placeholder="請輸入電話"
+                    :rules="isPhone"
+                    v-model="formData.user.tel"
+                  ></v-field>
+                  <error-message name="tel" class="invalid-feedback"></error-message>
                 </div>
-
                 <div class="mb-3">
                   <label for="address" class="form-label">收件人地址</label>
-                  <input id="address" name="地址" type="text" class="form-control" />
+                  <v-field
+                    id="address"
+                    name="address"
+                    type="text"
+                    class="form-control"
+                    :class="{ 'is-invalid': errors['address'] }"
+                    placeholder="請輸入地址"
+                    rules="required"
+                    v-model="formData.user.address"
+                  ></v-field>
+                  <error-message name="address" class="invalid-feedback"></error-message>
                 </div>
-
                 <div class="mb-3">
                   <label for="message" class="form-label">留言</label>
-                  <textarea name="" id="message" class="form-control" cols="30" rows="10"></textarea>
+                  <v-field id="message" name="message" v-model="formData.message" v-slot="{ field }">
+                    <textarea v-bind="field" class="form-control" cols="30" rows="10"></textarea>
+                  </v-field>
                 </div>
-                <div class="text-end">
-                  <button type="submit" class="btn btn-danger">送出訂單</button>
-                </div>
-              </form>
+                <button class="btn btn-primary">送出</button>
+              </v-form>
             </div>
           </div>
         </div>
@@ -170,7 +263,9 @@
                   <div>
                     <div class="input-group">
                       <input type="number" class="form-control" v-model.number="tempProduct.qty" min="1" />
-                      <button type="button" class="btn btn-primary" @click.prevent="addCart(tempProduct.id, tempProduct.qty);productModal.hide();">加入購物車</button>
+                      <button type="button" class="btn btn-primary" @click.prevent="addCart(tempProduct.id, tempProduct.qty);productModal.hide();">
+                        加入購物車
+                      </button>
                     </div>
                   </div>
                 </div>
