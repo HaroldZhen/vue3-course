@@ -47,7 +47,7 @@ module.exports = {
       title: 'Login',
       favicon: paths.src + '/images/favicon.png',
       template: paths.src + '/pages/index.html', // login
-      filename: 'index.html', // output file
+      filename: 'login.html', // output file
       chunks: ['main'],
     }),
     new HtmlWebpackPlugin({
@@ -61,7 +61,7 @@ module.exports = {
       title: 'Product',
       favicon: paths.src + '/images/favicon.png',
       template: paths.src + '/pages/product.html', // product
-      filename: 'product.html', // output file
+      filename: 'index.html', // output file
       chunks: ['product'],
     }),
 
