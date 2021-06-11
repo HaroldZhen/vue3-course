@@ -26,6 +26,7 @@ const App = {
   },
   data() {
     return {
+      isLoadingBtn: false,
       firstTab: '',
       productModal: '',
       products: [],
@@ -129,6 +130,7 @@ const App = {
         });
     },
     addCart(pid, qty = 1) {
+      this.isLoadingBtn = true;
       const data = {
         data: {
           product_id: pid,
@@ -150,6 +152,9 @@ const App = {
         })
         .catch((error) => {
           this.swaError({ title: error.toString() });
+        })
+        .finally(() => {
+          this.isLoadingBtn = false;
         });
     },
     delCart(pid) {
@@ -169,6 +174,7 @@ const App = {
         });
     },
     emptyCart() {
+      this.isLoadingBtn = true;
       hexAxios
         .delete(userAPI.cart.deleteAll())
         .then((res) => {
@@ -182,6 +188,9 @@ const App = {
         .then(() => this.getCart())
         .catch((error) => {
           this.swaError({ title: error.toString() });
+        })
+        .finally(() => {
+          this.isLoadingBtn = false;
         });
     },
     toPage(page = 1) {
@@ -191,6 +200,7 @@ const App = {
       return Number.parseInt(price, 10) - Number.parseInt(newPrice, 10);
     },
     onSubmit(values, { resetForm }) {
+      this.isLoadingBtn = true;
       console.log(values);
       if (!this.carts.carts.length) {
         this.swaError({ title: '購物車是空的唷！' });
@@ -220,6 +230,9 @@ const App = {
         })
         .catch((error) => {
           this.swaError({ title: error.toString() });
+        })
+        .finally(() => {
+          this.isLoadingBtn = false;
         });
     },
   },

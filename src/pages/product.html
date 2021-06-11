@@ -96,7 +96,12 @@
                           >
                             查看更多
                           </button>
-                          <button type="button" class="btn btn-outline-danger" @click.prevent="addCart(item.id)">加到購物車</button>
+                          <button type="button" class="btn btn-outline-danger" :disabled="isLoadingBtn" @click.prevent="addCart(item.id)">
+                            <div class="spinner-border spinner-border-sm" v-show="isLoadingBtn" role="status">
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                            加到購物車
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -123,7 +128,14 @@
                   <button class="btn btn-outline-success" type="button" id="couponBtn" @click="useCoupon">送出</button>
                 </div>
               </div>
-              <div class="col-auto"><button class="btn btn-outline-danger" type="button" @click="emptyCart">清空購物車</button></div>
+              <div class="col-auto">
+                <button class="btn btn-outline-danger" type="button" :disabled="isLoadingBtn || carts.carts.length == 0" @click="emptyCart">
+                  <div class="spinner-border spinner-border-sm" v-show="isLoadingBtn" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  清空購物車
+                </button>
+              </div>
             </div>
 
             <table class="table align-middle">
@@ -234,7 +246,12 @@
                     <textarea v-bind="field" class="form-control" cols="30" rows="10"></textarea>
                   </v-field>
                 </div>
-                <button class="btn btn-primary">送出</button>
+                <button class="btn btn-primary" :disabled="isLoadingBtn">
+                  <div class="spinner-border spinner-border-sm" v-show="isLoadingBtn" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  送出
+                </button>
               </v-form>
             </div>
           </div>
@@ -264,7 +281,15 @@
                   <div>
                     <div class="input-group">
                       <input type="number" class="form-control" v-model.number="tempProduct.qty" min="1" />
-                      <button type="button" class="btn btn-primary" @click.prevent="addCart(tempProduct.id, tempProduct.qty);productModal.hide();">
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        :disabled="isLoadingBtn"
+                        @click.prevent="addCart(tempProduct.id, tempProduct.qty);productModal.hide();"
+                      >
+                        <div class="spinner-border spinner-border-sm" v-show="isLoadingBtn" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
                         加入購物車
                       </button>
                     </div>
