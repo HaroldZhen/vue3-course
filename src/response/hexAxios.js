@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const url = 'https://vue3-course-api.hexschool.io/';
-const apiPath = 'haroldapi';
+const url = process.env.VUE_APP_API_URL;
+const apiPath = process.env.VUE_APP_PATH;
 
 export const hexAxios = axios.create({
   baseURL: url,
