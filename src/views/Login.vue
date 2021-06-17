@@ -54,11 +54,25 @@ export default {
             this.saveCookie(res.data);
             this.$router.push('/dashboard/product');
           } else {
-            console.warn(res.data.message);
+            this.$swal({
+              title: res.data.message,
+              icon: 'error',
+              toast: false,
+              position: 'center',
+              showCloseButton: true,
+              showConfirmButton: false,
+            });
           }
         })
         .catch((error) => {
-          console.warn(error.toString());
+          this.$swal({
+            title: error.toString(),
+            icon: 'error',
+            toast: false,
+            position: 'center',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
         });
     },
     saveCookie({ token, expired }) {
@@ -75,7 +89,14 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error.toString());
+          this.$swal({
+            title: error.toString(),
+            icon: 'error',
+            toast: false,
+            position: 'center',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
         });
     },
   },

@@ -104,12 +104,27 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error.toString());
+          this.$swal({
+            title: error.toString(),
+            toast: false,
+            position: 'center',
+            icon: 'error',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
         });
     },
     getProduct() {
       const { total_pages: totalPages = 5 } = this.pages;
       this.currentPage = this.currentPage > totalPages ? totalPages : this.currentPage;
+      this.$swal({
+        title: '讀取產品',
+        icon: 'info',
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 1000,
+      });
       hexAxios
         .get(api.product.page(this.currentPage))
         .then((res) => {
@@ -117,13 +132,26 @@ export default {
           if (isSuccess) {
             this.products = Object.values(products).map((item) => item);
             this.pages = { ...pagination };
-            console.log('讀取產品');
           } else {
-            console.log(res.data.message);
+            this.$swal({
+              title: res.data.message,
+              icon: 'error',
+              toast: false,
+              position: 'center',
+              showCloseButton: true,
+              showConfirmButton: false,
+            });
           }
         })
         .catch((error) => {
-          console.log(error.toString());
+          this.$swal({
+            title: error.toString(),
+            icon: 'error',
+            toast: false,
+            position: 'center',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
         });
     },
     newOrUpdateProduct(tempProduct) {
@@ -148,14 +176,34 @@ export default {
         .then((res) => {
           const { success: isSuccess = false } = res.data;
           if (isSuccess) {
-            console.log(data.data.title);
-            this.getProduct();
+            this.$swal({
+              title: data.data.title,
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1000,
+            }).then(() => {
+              this.getProduct();
+            });
           } else {
-            console.log(res.data.message);
+            this.$swal({
+              title: res.data.message,
+              icon: 'error',
+              toast: false,
+              position: 'center',
+              showCloseButton: true,
+              showConfirmButton: false,
+            });
           }
         })
         .catch((error) => {
-          console.log(error.toString());
+          this.$swal({
+            title: error.toString(),
+            icon: 'error',
+            toast: false,
+            position: 'center',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
         });
     },
     addImage(tempImage) {
@@ -169,32 +217,73 @@ export default {
         .then((res) => {
           const { success: isSuccess = false } = res.data;
           if (isSuccess) {
-            console.log('更新成功');
-            this.getProduct();
+            this.$swal({
+              icon: 'success',
+              title: '更新成功',
+              showConfirmButton: false,
+              timer: 1000,
+            }).then(() => {
+              this.getProduct();
+            });
+            // this.getProduct();
           } else {
-            console.log(res.data.message);
+            this.$swal({
+              title: res.data.message,
+              icon: 'error',
+              toast: false,
+              position: 'center',
+              showCloseButton: true,
+              showConfirmButton: false,
+            });
           }
         })
         .catch((error) => {
-          console.log(error.toString());
+          this.$swal({
+            title: error.toString(),
+            icon: 'error',
+            toast: false,
+            position: 'center',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
         });
     },
     deleteProduct(id) {
       this.$refs.deleteModal.modal.hide();
+      this.products = [];
       hexAxios
         .delete(api.product.src(id))
         .then((res) => {
           const { success: isSuccess = false } = res.data;
           if (isSuccess) {
-            console.log('刪除成功');
-            this.getProduct();
+            this.$swal({
+              title: '刪除成功',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1000,
+            }).then(() => {
+              this.getProduct();
+            });
           } else {
-            console.log(res.data.message);
+            this.$swal({
+              title: res.data.message,
+              icon: 'error',
+              toast: false,
+              position: 'center',
+              showCloseButton: true,
+              showConfirmButton: false,
+            });
           }
         })
-        .then(this.getProduct())
         .catch((error) => {
-          console.log(error.toString());
+          this.$swal({
+            title: error.toString(),
+            icon: 'error',
+            toast: false,
+            position: 'center',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
         });
     },
     deleteImage(index) {
