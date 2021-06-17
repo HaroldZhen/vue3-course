@@ -4,9 +4,9 @@
     <Banner></Banner>
     <Breadcrumb></Breadcrumb>
     <div class="row">
-      <div class="col-md-4 d-flex" v-for="item in products" :key="item.id">
+      <div class="col-md-4 d-flex position-relative" v-for="item in products" :key="item.id">
         <div class="card">
-          <img :src="item.imageUrl" class="card-img-top" :alt="item.title" />
+          <img :src="item.imageUrl" class="card-img-top img-fluid" :alt="item.title" />
           <div class="text-start px-2">
             <span class="badge bg-success">{{ item.category }}</span>
           </div>
@@ -15,7 +15,7 @@
             <p class="card-text">{{ item.description }}</p>
           </div>
           <div class="card-footer border-0 bg-transparent">
-            <a href="#" class="btn btn-primary">查看更多</a>
+            <router-link class="btn btn-primary stretched-link" :to="`/product/${item.id}`">查看更多</router-link>
           </div>
         </div>
       </div>
@@ -87,26 +87,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>

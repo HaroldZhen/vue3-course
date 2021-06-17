@@ -6,31 +6,18 @@
         <div class="col-8">
           <form class="form-signin" @submit.prevent="login">
             <div class="form-floating mb-3">
-              <input
-                type="email"
-                class="form-control"
-                v-model="user.username"
-                placeholder="name@example.com"
-                id="email"
-                required
-                autofocus
-              />
+              <input type="email" class="form-control" v-model="user.username" placeholder="name@example.com" id="email" required autofocus />
               <label for="email">Email address</label>
             </div>
             <div class="form-floating">
-              <input
-                type="password"
-                class="form-control"
-                v-model="user.password"
-                placeholder="Password"
-                required
-              />
+              <input type="password" class="form-control" v-model="user.password" placeholder="Password" required />
               <label for="password">Password</label>
             </div>
             <button class="btn btn-lg btn-primary w-100 mt-3">登入</button>
           </form>
           <div>
             <router-link to="/">Home</router-link>
+            <p><router-link v-if="isLogin" to="/dashboard/product">直接登入</router-link></p>
           </div>
         </div>
       </div>
@@ -49,6 +36,7 @@ export default {
         username: '',
         password: '',
       },
+      isLogin: false,
     };
   },
   methods: {
@@ -76,11 +64,31 @@ export default {
     saveCookie({ token, expired }) {
       document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
     },
+    async checkUser() {
+      this.isLogin = false;
+      await hexAxios
+        .post(api.check)
+        .then((res) => {
+          const { success } = res.data;
+          if (success) {
+            this.isLogin = true;
+          }
+        })
+        .catch((error) => {
+          console.log(error.toString());
+        });
+    },
+  },
+  created() {
+    const authTOKEN = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    hexAxios.defaults.headers.common.Authorization = authTOKEN;
+    // this.tempProduct = this.defaultProduct();
+    this.checkUser();
   },
 };
 </script>
 <style>
-.login{
+.login {
   min-height: 100vh;
   text-align: center;
   display: flex;

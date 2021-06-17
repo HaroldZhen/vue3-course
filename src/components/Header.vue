@@ -2,7 +2,10 @@
   <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="#">Logo</a>
+        <a class="navbar-brand" href="#">
+          <i class="bi bi-image-fill h3"></i>
+          Logo
+        </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -22,10 +25,12 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/about">About</router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/login">Admin</router-link>
-            </li>
           </ul>
+          <div class="ms-auto">
+            <router-link class="text-decoration-none" to="/login">
+              <i class="bi bi-gear h5 text-dark"></i>
+            </router-link>
+          </div>
         </div>
       </div>
     </nav>
