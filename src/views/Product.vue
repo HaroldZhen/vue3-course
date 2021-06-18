@@ -57,11 +57,25 @@ export default {
               qty: 1,
             };
           } else {
-            console.log(message);
+            this.$swal({
+              title: message,
+              icon: 'error',
+              toast: false,
+              position: 'center',
+              showCloseButton: true,
+              showConfirmButton: false,
+            });
           }
         })
         .catch((error) => {
-          console.log(error.toString());
+          this.$swal({
+            title: error.toString(),
+            icon: 'error',
+            toast: false,
+            position: 'center',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
         });
     },
     addToCart(pid, qty = 1) {
@@ -77,16 +91,33 @@ export default {
         .then((res) => {
           const { success, message } = res.data;
           if (success) {
-            console.log(message);
+            this.$swal({
+              title: message,
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1000,
+            });
           } else {
-            console.log(message);
+            this.$swal({
+              title: message,
+              icon: 'error',
+              toast: false,
+              position: 'center',
+              showCloseButton: true,
+              showConfirmButton: false,
+            });
           }
         })
-        .then(() => {
-          this.getCart();
-        })
+        .then(this.$bus.$emit('cartCount'))
         .catch((error) => {
-          console.log(error.toString());
+          this.$swal({
+            title: error.toString(),
+            icon: 'error',
+            toast: false,
+            position: 'center',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
         })
         .finally(() => {
           this.isLoadingBtn = false;

@@ -65,25 +65,9 @@ export default {
           console.log(error.toString());
         });
     },
-    getCart() {
-      hexAxios
-        .get(userAPI.cart.list())
-        .then((res) => {
-          const { success, data, message } = res.data;
-          if (success) {
-            this.carts = data;
-          } else {
-            console.log(message);
-          }
-        })
-        .catch((error) => {
-          console.log(error.toString());
-        });
-    },
   },
   created() {
     this.getProduct();
-    this.getCart();
   },
 };
 </script>

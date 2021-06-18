@@ -25,10 +25,17 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/about">About</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/customer">Customer</router-link>
+            </li>
           </ul>
           <div class="ms-auto">
-            <router-link class="text-decoration-none" to="/login">
-              <i class="bi bi-gear h5 text-dark"></i>
+            <router-link class="text-decoration-none position-relative" to="/cart">
+              <i class="bi bi-cart-fill h2 text-dark cart-item"></i>
+              <span class="badge ms-1 rounded-pill bg-success cart-count">{{ cartCount }}</span>
+            </router-link>
+            <router-link class="text-decoration-none ms-2" to="/login">
+              <i class="bi bi-gear h4 text-dark"></i>
             </router-link>
           </div>
         </div>
@@ -36,3 +43,75 @@
     </nav>
   </header>
 </template>
+<script>
+import { hexAxios, userAPI } from '@/response/hexAxios';
+
+export default {
+  name: 'Header',
+  data() {
+    return {
+      carts: {
+        carts: [],
+      },
+    };
+  },
+  beforeCreate() {
+    this.$bus.$on('cartCount', (carts = {}) => {
+      if (JSON.stringify(carts) !== '{}') {
+        this.carts = carts;
+      } else {
+        this.getCart();
+      }
+    });
+  },
+  mounted() {
+    this.$bus.$emit('cartCount');
+  },
+  computed: {
+    cartCount() {
+      const count = this.carts.carts.length;
+      return count;
+    },
+  },
+  methods: {
+    getCart() {
+      hexAxios
+        .get(userAPI.cart.list())
+        .then((res) => {
+          const { success, data, message } = res.data;
+          if (success) {
+            this.carts = data;
+          } else {
+            this.$swal({
+              title: message,
+              icon: 'error',
+              toast: false,
+              position: 'center',
+              showCloseButton: true,
+              showConfirmButton: false,
+            });
+          }
+        })
+        .catch((error) => {
+          this.$swal({
+            title: error.toString(),
+            icon: 'error',
+            toast: false,
+            position: 'center',
+            showCloseButton: true,
+            showConfirmButton: false,
+          });
+        });
+    },
+  },
+};
+</script>
+
+<style>
+.cart-count {
+  font-size: 0.6rem;
+  position: absolute;
+  top: -16px;
+  right: 0px;
+}
+</style>
