@@ -30,11 +30,6 @@ https://haroldzhen.github.io/vue3-course/week6/#/customer
 網址: https://haroldzhen.github.io/vue3-course/week6/#/dashboard/product
 ![Dashborad](https://i.imgur.com/v39qI9y.jpg)
 
-
-## 任務說明：
-
-使用 [VeeValidate](https://vee-validate.logaretm.com/v4/) 套件完成表單驗證功能，並且串接前台 API 完成購物車功能，[操作文件](https://hackmd.io/FFv0a5cBToOATP7uI5COMQ)
-
 ## 課程 API 相關網址：
 - [註冊連結、測試管理平台](https://vue3-course-api.hexschool.io/)
 - [API 文件](https://github.com/hexschool/vue3-course-api-wiki/wiki/%E5%AE%A2%E6%88%B6%E8%B3%BC%E7%89%A9-%5B%E5%85%8D%E9%A9%97%E8%AD%89%5D)
