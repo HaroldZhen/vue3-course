@@ -1,35 +1,23 @@
 <template>
-  <Header></Header>
-  <main class="container my-3">
-    <Breadcrumb>
-      <li class="breadcrumb-item">
-        {{ product.title }}
-      </li>
-    </Breadcrumb>
-    <div class="row">
-      <div class="col-7">
-        <img class="img-fluid" :src="product.imageUrl" alt="" />
-      </div>
-      <div class="col-5">
-        <h2>{{ product.title }}</h2>
-        <p>NT: {{ product.price }}</p>
-        <p>{{ product.description }}</p>
-        <button type="button" class="btn btn-primary" :disabled="isLoadingBtn" @click.prevent="addToCart(product.id)">
-          <div class="spinner-border spinner-border-sm" v-show="isLoadingBtn" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          加入購物車
-        </button>
-      </div>
+  <div class="row">
+    <div class="col-7">
+      <img class="img-fluid" :src="product.imageUrl" alt="" />
     </div>
-  </main>
-  <Footer></Footer>
+    <div class="col-5">
+      <h2>{{ product.title }}</h2>
+      <p>NT: {{ product.price }}</p>
+      <p>{{ product.description }}</p>
+      <button type="button" class="btn btn-primary" :disabled="isLoadingBtn" @click.prevent="addToCart(product.id)">
+        <div class="spinner-border spinner-border-sm" v-show="isLoadingBtn" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        加入購物車
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue';
-import Breadcrumb from '@/components/Breadcrumb.vue';
-import Footer from '@/components/Footer.vue';
 import { hexAxios, userAPI } from '@/response/hexAxios';
 
 export default {
@@ -38,11 +26,6 @@ export default {
       isLoadingBtn: false,
       product: {},
     };
-  },
-  components: {
-    Header,
-    Breadcrumb,
-    Footer,
   },
   methods: {
     getProdut(pid) {

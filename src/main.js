@@ -10,7 +10,7 @@ import AllRules from '@vee-validate/rules';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 import App from './App.vue';
-import bus from './bus';
+import bus from './methods/bus';
 import router from './router';
 
 import 'bootstrap';
