@@ -2,6 +2,7 @@
 node_modules
 /dist
 /old
+/week7
 
 
 # local env files
