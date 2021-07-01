@@ -1,6 +1,7 @@
 <template>
-  <div class="text-end mt-4">
-    <button class="btn btn-primary" @click="newProductModal">建立新的產品</button>
+  <div class="d-flex justify-content-between align-items-baseline">
+    <h2><i class="bi bi-house-door-fill"></i>產品管理</h2>
+    <button class="btn btn-primary m-3" @click="newProductModal">建立新的產品</button>
   </div>
   <table class="table mt-4">
     <thead>
@@ -17,21 +18,45 @@
       <template v-for="product in products" :key="product.id">
         <tr>
           <td>
-            <span class="badge mx-1" :class="tagColor(key)" v-for="(item, key) in product.category.split(',')" :key="item.id">{{ item }}</span>
+            <span
+              class="badge mx-1"
+              :class="tagColor(key)"
+              v-for="(item, key) in product.category.split(',')"
+              :key="item.id"
+              >{{ item }}</span
+            >
           </td>
           <td>{{ product.title }}</td>
           <td class="text-end">{{ product.origin_price }}</td>
           <td class="text-end">{{ product.price }}</td>
           <td>
             <span class="text-success" v-if="product.is_enabled">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
-                <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
-                <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-check2-circle"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"
+                />
+                <path
+                  d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"
+                />
               </svg>
               啟用</span
             >
             <span v-else>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-x-circle"
+                viewBox="0 0 16 16"
+              >
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                 <path
                   d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
@@ -42,8 +67,12 @@
           </td>
           <td>
             <div class="btn-group">
-              <button type="button" class="btn btn-outline-primary btn-sm" @click="editProductModal(product)">編輯</button>
-              <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteProductModal(product)">刪除</button>
+              <button type="button" class="btn btn-outline-primary btn-sm" @click="editProductModal(product)">
+                編輯
+              </button>
+              <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteProductModal(product)">
+                刪除
+              </button>
             </div>
           </td>
         </tr>
@@ -51,8 +80,14 @@
     </tbody>
   </table>
   <Pagination :pages="pages" :current-page="currentPage" @to-page="toPage" v-if="pages.total_pages"></Pagination>
-  <ProductModal :tempProduct="tempProduct" @addImage="addImage" @newOrUpdateProduct="newOrUpdateProduct" @deleteImage="deleteImage" ref="productModal"></ProductModal>
-  <DeleteModal :tempProduct="tempProduct" @deleteProduct="deleteProduct" ref="deleteModal"></DeleteModal>
+  <ProductModal
+    :tempProduct="tempProduct"
+    @addImage="addImage"
+    @newOrUpdateProduct="newOrUpdateProduct"
+    @deleteImage="deleteImage"
+    ref="productModal"
+  ></ProductModal>
+  <DeleteModal :item="tempProduct" @deletItem="deleteProduct" ref="deleteModal"></DeleteModal>
 </template>
 
 <script>
@@ -100,18 +135,8 @@ export default {
           if (success) {
             this.getProduct();
           } else {
-            this.$router.push('/login');
+            this.$router.push({ name: 'admin.login' });
           }
-        })
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            toast: false,
-            position: 'center',
-            icon: 'error',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
         });
     },
     getProduct() {
@@ -132,26 +157,7 @@ export default {
           if (isSuccess) {
             this.products = Object.values(products).map((item) => item);
             this.pages = { ...pagination };
-          } else {
-            this.$swal({
-              title: res.data.message,
-              icon: 'error',
-              toast: false,
-              position: 'center',
-              showCloseButton: true,
-              showConfirmButton: false,
-            });
           }
-        })
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
         });
     },
     newOrUpdateProduct(tempProduct) {
@@ -184,26 +190,7 @@ export default {
             }).then(() => {
               this.getProduct();
             });
-          } else {
-            this.$swal({
-              title: res.data.message,
-              icon: 'error',
-              toast: false,
-              position: 'center',
-              showCloseButton: true,
-              showConfirmButton: false,
-            });
           }
-        })
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
         });
     },
     addImage(tempImage) {
@@ -225,27 +212,7 @@ export default {
             }).then(() => {
               this.getProduct();
             });
-            // this.getProduct();
-          } else {
-            this.$swal({
-              title: res.data.message,
-              icon: 'error',
-              toast: false,
-              position: 'center',
-              showCloseButton: true,
-              showConfirmButton: false,
-            });
           }
-        })
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
         });
     },
     deleteProduct(id) {
@@ -264,26 +231,7 @@ export default {
             }).then(() => {
               this.getProduct();
             });
-          } else {
-            this.$swal({
-              title: res.data.message,
-              icon: 'error',
-              toast: false,
-              position: 'center',
-              showCloseButton: true,
-              showConfirmButton: false,
-            });
           }
-        })
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
         });
     },
     deleteImage(index) {

@@ -17,12 +17,30 @@
       </div>
       <div class="mb-3">
         <label for="email" class="form-label">收件人姓名</label>
-        <VField id="name" name="name" type="text" class="form-control" :class="{ 'is-invalid': errors['name'] }" placeholder="請輸入姓名" rules="required" v-model="formData.user.name"></VField>
+        <VField
+          id="name"
+          name="name"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errors['name'] }"
+          placeholder="請輸入姓名"
+          rules="required"
+          v-model="formData.user.name"
+        ></VField>
         <ErrorMessage name="name" class="invalid-feedback"></ErrorMessage>
       </div>
       <div class="mb-3">
         <label for="tel" class="form-label">收件人電話</label>
-        <VField id="tel" name="tel" type="text" class="form-control" :class="{ 'is-invalid': errors['tel'] }" placeholder="請輸入電話" :rules="isPhone" v-model="formData.user.tel"></VField>
+        <VField
+          id="tel"
+          name="tel"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errors['tel'] }"
+          placeholder="請輸入電話"
+          :rules="isPhone"
+          v-model="formData.user.tel"
+        ></VField>
         <ErrorMessage name="tel" class="invalid-feedback"></ErrorMessage>
       </div>
       <div class="mb-3">
@@ -68,10 +86,6 @@ export default {
       },
     };
   },
-  created() {},
-  mounted() {
-    console.log(this.$route.matched);
-  },
   methods: {
     onSubmit() {
       this.isLoadingBtn = true;
@@ -83,7 +97,7 @@ export default {
       hexAxios
         .post(userAPI.order.src(), data)
         .then((res) => {
-          const { success, message, orderId } = res.data;
+          const { success, orderId } = res.data;
           if (success) {
             this.$swal({
               title: `訂單ID:${orderId}`,
@@ -94,26 +108,7 @@ export default {
               this.$refs.form.resetForm();
               this.$router.push('/');
             });
-          } else {
-            this.$swal({
-              title: message,
-              icon: 'error',
-              toast: false,
-              position: 'center',
-              showCloseButton: true,
-              showConfirmButton: false,
-            });
           }
-        })
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
         })
         .finally(() => {
           this.isLoadingBtn = false;

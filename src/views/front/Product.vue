@@ -49,16 +49,6 @@ export default {
               showConfirmButton: false,
             });
           }
-        })
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
         });
     },
     addToCart(pid, qty = 1) {
@@ -80,28 +70,9 @@ export default {
               showConfirmButton: false,
               timer: 1000,
             });
-          } else {
-            this.$swal({
-              title: message,
-              icon: 'error',
-              toast: false,
-              position: 'center',
-              showCloseButton: true,
-              showConfirmButton: false,
-            });
           }
         })
         .then(this.$bus.$emit('cartCount'))
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
-        })
         .finally(() => {
           this.isLoadingBtn = false;
         });

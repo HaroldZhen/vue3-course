@@ -15,7 +15,7 @@ module.exports = {
       {
         ignoreUrls: true,
         ignorePattern: 'd="([\\s\\S]*?)"',
-        code: 200,
+        code: 120,
       },
     ],
   },

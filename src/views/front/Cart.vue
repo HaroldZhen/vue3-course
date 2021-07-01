@@ -3,12 +3,24 @@
   <div class="row">
     <div class="col-auto ms-auto">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="請輸入優惠卷:test0630" v-model="couponCode" aria-label="coupon code" aria-describedby="couponBtn" />
+        <input
+          type="text"
+          class="form-control"
+          placeholder="請輸入優惠卷:test0630"
+          v-model="couponCode"
+          aria-label="coupon code"
+          aria-describedby="couponBtn"
+        />
         <button class="btn btn-outline-success" type="button" id="couponBtn" @click="useCoupon">送出</button>
       </div>
     </div>
     <div class="col-auto">
-      <button class="btn btn-outline-danger" type="button" :disabled="isLoadingBtn || carts.carts.length == 0" @click="emptyCart">
+      <button
+        class="btn btn-outline-danger"
+        type="button"
+        :disabled="isLoadingBtn || carts.carts.length == 0"
+        @click="emptyCart"
+      >
         <div class="spinner-border spinner-border-sm" v-show="isLoadingBtn" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
@@ -76,34 +88,13 @@ export default {
   },
   methods: {
     getCart() {
-      hexAxios
-        .get(userAPI.cart.list())
-        .then((res) => {
-          const { success, data, message } = res.data;
-          if (success) {
-            this.carts = data;
-            this.$bus.$emit('cartCount', this.carts);
-          } else {
-            this.$swal({
-              title: message,
-              icon: 'error',
-              toast: false,
-              position: 'center',
-              showCloseButton: true,
-              showConfirmButton: false,
-            });
-          }
-        })
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
-        });
+      hexAxios.get(userAPI.cart.list()).then((res) => {
+        const { success, data } = res.data;
+        if (success) {
+          this.carts = data;
+          this.$bus.$emit('cartCount', this.carts);
+        }
+      });
     },
     useCoupon() {
       if (!this.couponCode) {
@@ -227,17 +218,7 @@ export default {
             });
           }
         })
-        .then(() => this.getCart())
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
-        });
+        .then(() => this.getCart());
     },
   },
   created() {

@@ -12,6 +12,7 @@ import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 import App from './App.vue';
 import bus from './methods/bus';
 import router from './router';
+import { date, currency, dateToTimestamp } from './methods/filters';
 
 import 'bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -27,6 +28,13 @@ Object.keys(AllRules).forEach((rule) => {
 });
 
 const app = createApp(App);
+
+app.config.globalProperties.$filters = {
+  date,
+  currency,
+  dateToTimestamp,
+};
+
 app.config.globalProperties.$bus = bus;
 app.use(router);
 app.use(VueSweetalert2);

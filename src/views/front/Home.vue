@@ -11,7 +11,9 @@
           <p class="card-text">{{ item.description }}</p>
         </div>
         <div class="card-footer border-0 bg-transparent">
-          <router-link class="btn btn-primary stretched-link" :to="{ name: 'front.product', params: { id: item.id }}" >查看更多</router-link>
+          <router-link class="btn btn-primary stretched-link" :to="{ name: 'front.product', params: { id: item.id } }"
+            >查看更多</router-link
+          >
         </div>
       </div>
     </div>
@@ -22,6 +24,7 @@
 import { hexAxios, userAPI } from '@/response/hexAxios';
 
 export default {
+  name: 'Home',
   data() {
     return {
       products: [],
@@ -44,13 +47,11 @@ export default {
           } else {
             console.log(message);
           }
-        })
-        .catch((error) => {
-          console.log(error.toString());
         });
     },
   },
   created() {
+    console.log(123);
     this.getProduct();
   },
 };

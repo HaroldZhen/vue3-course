@@ -23,18 +23,18 @@
               <router-link class="nav-link active" aria-current="page" to="/">Home</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/about">About</router-link>
+              <router-link class="nav-link" :to="{ name: 'front.about' }">About</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/customer">Customer</router-link>
+              <router-link class="nav-link" :to="{ name: 'front.customer' }">Customer</router-link>
             </li>
           </ul>
           <div class="ms-auto">
-            <router-link class="text-decoration-none position-relative" to="/cart">
+            <router-link class="text-decoration-none position-relative" :to="{ name: 'front.cart' }">
               <i class="bi bi-cart-fill h2 text-dark cart-item"></i>
               <span class="badge ms-1 rounded-pill bg-success cart-count">{{ cartCount }}</span>
             </router-link>
-            <router-link class="text-decoration-none ms-2" to="/login">
+            <router-link class="text-decoration-none ms-2" :to="{ name: 'admin.prodcut' }">
               <i class="bi bi-gear h4 text-dark"></i>
             </router-link>
           </div>
@@ -75,33 +75,12 @@ export default {
   },
   methods: {
     getCart() {
-      hexAxios
-        .get(userAPI.cart.list())
-        .then((res) => {
-          const { success, data, message } = res.data;
-          if (success) {
-            this.carts = data;
-          } else {
-            this.$swal({
-              title: message,
-              icon: 'error',
-              toast: false,
-              position: 'center',
-              showCloseButton: true,
-              showConfirmButton: false,
-            });
-          }
-        })
-        .catch((error) => {
-          this.$swal({
-            title: error.toString(),
-            icon: 'error',
-            toast: false,
-            position: 'center',
-            showCloseButton: true,
-            showConfirmButton: false,
-          });
-        });
+      hexAxios.get(userAPI.cart.list()).then((res) => {
+        const { success, data } = res.data;
+        if (success) {
+          this.carts = data;
+        }
+      });
     },
   },
 };

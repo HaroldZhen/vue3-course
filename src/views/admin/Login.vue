@@ -6,22 +6,42 @@
           <div class="d-none d-md-block login__image img-fluid"></div>
         </div>
         <div class="login__black col-12 col-md-6 d-flex justify-content-center align-items-center">
-          <div class="col-8 text-center ">
-            <h1 class="h3 font-weight-normal">管理者後台</h1>
+          <div class="col-8 col-lg-6 text-center bg-white shadow-sm py-4">
+            <h1 class="h3 font-weight-normal">🏝 布魯島</h1>
+            <p class="text-secondary">管理者後台</p>
             <form class="login__form" @submit.prevent="login">
               <div class="form-floating mb-3">
-                <input type="email" class="form-control" v-model="user.username" placeholder="name@example.com" id="email" required autofocus />
+                <input
+                  type="email"
+                  class="form-control"
+                  v-model="user.username"
+                  placeholder="name@example.com"
+                  id="email"
+                  required
+                  autofocus
+                />
                 <label for="email">Email address</label>
               </div>
               <div class="form-floating">
                 <input type="password" class="form-control" v-model="user.password" placeholder="Password" required />
                 <label for="password">Password</label>
               </div>
-              <button class="btn btn-lg btn-primary w-100 mt-3">登入</button>
+              <div class="d-flex justify-content-between my-2">
+                <div>
+                  <input type="checkbox" name="remeberme" id="remeberme" />
+                  <label class="ms-1" for="remeberme">記得我</label>
+                </div>
+                <a href="#">忘記密碼</a>
+              </div>
+              <button class="btn btn-lg btn-primary w-100">登入</button>
             </form>
-            <router-link v-if="isLogin" class="d-block text-secondary" to="/dashboard/product">直接登入</router-link>
             <footer>
-              <p class="mt-5 mb-3 text-muted">&copy; 2021~∞ - 2021</p>
+              <p class="text-muted">
+                &copy; 2021
+                <router-link v-if="isLogin" class="mx-1 text-muted" :to="{ name: 'admin.prodcut' }"
+                  >直接登入</router-link
+                >
+              </p>
             </footer>
           </div>
         </div>
@@ -56,7 +76,7 @@ export default {
           const { success = false } = res.data;
           if (success) {
             this.saveCookie(res.data);
-            this.$router.push('/dashboard/product');
+            this.$router.push({ name: 'admin.prodcut' });
           } else {
             this.$swal({
               title: res.data.message,
@@ -112,6 +132,13 @@ export default {
 };
 </script>
 <style lang="scss">
+@import '@/assets/scss/backend';
+.login {
+  background-color: #f9fafd;
+  p {
+    margin-bottom: 0;
+  }
+}
 .login__image {
   background-image: url('https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1080&q=80');
   background-repeat: no-repeat;
@@ -119,7 +146,7 @@ export default {
   background-position: center center;
   min-height: 100vh;
   position: relative;
-  &::before{
+  /* &::before{
     content: " ";
     position: absolute;
     background-color: rgba(#111111, 20%);
@@ -128,9 +155,9 @@ export default {
     right: 0;
     bottom: 0;
     z-index: 1;
-  }
+  } */
 }
-.login__black{
+.login__black {
   min-height: 100vh;
 }
 

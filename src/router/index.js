@@ -9,7 +9,6 @@ const routes = [
   // http://localhost:8080/#/product/-M_sdyzjVAwppye84kaW
   {
     path: '/',
-    name: 'front.index',
     component: () => import('@/views/layout/FrontLayout.vue'),
     meta: {
       breadcrumb: '首頁',
@@ -49,6 +48,9 @@ const routes = [
   // == Admin 管理者後台 ==
   // http://localhost:8080/#/admin/login
   // http://localhost:8080/#/admin
+  // http://localhost:8080/#/admin/order
+  // http://localhost:8080/#/admin/coupon
+  // http://localhost:8080/#/admin/article
   {
     path: '/admin/login',
     name: 'admin.login',
@@ -63,6 +65,26 @@ const routes = [
         path: '',
         name: 'admin.prodcut',
         component: () => import('@/views/admin/Prodcut.vue'),
+      },
+      {
+        path: 'order',
+        name: 'admin.order',
+        component: () => import('@/views/admin/Order.vue'),
+      },
+      {
+        path: 'coupon',
+        name: 'admin.coupon',
+        component: () => import('@/views/admin/Coupon.vue'),
+      },
+      {
+        path: 'article',
+        name: 'admin.article',
+        component: () => import('@/views/admin/Article.vue'),
+      },
+      {
+        path: 'phoneOrder',
+        name: 'admin.phoneOrder',
+        component: () => import('@/views/admin/PhoneOrder.vue'),
       },
     ],
   },

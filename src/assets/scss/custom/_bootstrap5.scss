@@ -1,0 +1,8 @@
+// Option A: Include all of Bootstrap
+@import "~bootstrap/scss/functions";
+@import "@/assets/scss/custom/_variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/bootstrap";
+
+@import "@/assets/scss/custom/_custom";
+
