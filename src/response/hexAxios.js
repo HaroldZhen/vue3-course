@@ -68,6 +68,7 @@ const api = {
   signin: '/admin/signin',
   logout: '/logout',
   check: '/api/user/check',
+  upload: `/api/${apiPath}/admin/upload`,
   product: {
     path: `/api/${apiPath}/admin/product`,
     src: (id) => `/api/${apiPath}/admin/product/${id}`,

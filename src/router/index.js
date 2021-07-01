@@ -51,6 +51,7 @@ const routes = [
   // http://localhost:8080/#/admin/order
   // http://localhost:8080/#/admin/coupon
   // http://localhost:8080/#/admin/article
+  // http://localhost:8080/#/admin/phoneorder
   {
     path: '/admin/login',
     name: 'admin.login',
@@ -82,7 +83,7 @@ const routes = [
         component: () => import('@/views/admin/Article.vue'),
       },
       {
-        path: 'phoneOrder',
+        path: 'phoneorder',
         name: 'admin.phoneOrder',
         component: () => import('@/views/admin/PhoneOrder.vue'),
       },

@@ -182,7 +182,7 @@
           <div class="mb-3">
             <label for="message" class="form-label">留言</label>
             <VField id="message" name="message" v-model="formData.message" v-slot="{ field }">
-              <textarea v-bind="field" class="form-control" cols="10" rows="10"></textarea>
+              <textarea v-bind="field" class="form-control" cols="30" rows="5"></textarea>
             </VField>
           </div>
           <div class="d-grid gap-2">
