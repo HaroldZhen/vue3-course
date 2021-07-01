@@ -34,7 +34,7 @@
               <i class="bi bi-cart-fill h2 text-dark cart-item"></i>
               <span class="badge ms-1 rounded-pill bg-success cart-count">{{ cartCount }}</span>
             </router-link>
-            <router-link class="text-decoration-none ms-2" :to="{ name: 'admin.prodcut' }">
+            <router-link class="text-decoration-none ms-2" :to="{ name: 'admin.login' }">
               <i class="bi bi-gear h4 text-dark"></i>
             </router-link>
           </div>

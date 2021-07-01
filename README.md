@@ -1,39 +1,71 @@
 # Vue 作品實戰班 - 2021夏季
 
-# 第六週 - 進階語法介紹
+# 第七週 - 進階語法介紹
 
 ## 功能畫面
-網址: https://haroldzhen.github.io/vue3-course/week6/#/
+網址: https://haroldzhen.github.io/vue3-course/week7/#/
 
-### 首頁
-https://haroldzhen.github.io/vue3-course/week6/#/
-![Imgur](https://i.imgur.com/unAo5Im.jpg)
+## 登入
+https://haroldzhen.github.io/vue3-course/week7/#/admin/login
+![Imgur](https://i.imgur.com/H6DVxGz.jpg)
 
-### 單一產品
-https://haroldzhen.github.io/vue3-course/week6/#/product/-M_sfE-JUqyTojRWKw4Q
-![Imgur](https://i.imgur.com/uOAXz7d.jpg)
+## 產品管理
+網址: https://haroldzhen.github.io/vue3-course/week7/#/admin
+![Imgur](https://i.imgur.com/IFH1gz8.jpg)
 
-### 購物車
-https://haroldzhen.github.io/vue3-course/week6/#/cart
-![Imgur](https://i.imgur.com/uOAXz7d.jpg)
+## 訂單管理
+https://haroldzhen.github.io/vue3-course/week7/#/admin/order
+![Imgur](https://i.imgur.com/pEpnLx9.jpg)
 
-### 顧客資料表單
-https://haroldzhen.github.io/vue3-course/week6/#/customer
-![Imgur](https://i.imgur.com/4MkyJqv.jpg)
+## 最新消息
+https://haroldzhen.github.io/vue3-course/week7/#/admin/article
+![Imgur](https://i.imgur.com/E82NYts.jpg)
 
-## 後台管理
-### 登入(Login)
-網址: https://haroldzhen.github.io/vue3-course/week6/#/login
-![Login](https://i.imgur.com/knOH2QQ.jpg)
-
-### 產品請單(Dashborad)
-網址: https://haroldzhen.github.io/vue3-course/week6/#/dashboard/product
-![Dashborad](https://i.imgur.com/v39qI9y.jpg)
-
+## 電話接單
+https://haroldzhen.github.io/vue3-course/week7/#/admin/phoneOrder
+![Imgur](https://i.imgur.com/NRolnIP.jpg)
 
 ## 任務說明：
+在先前的課程中，已經介紹了登入、產品列表的製作，請同學完成剩下功能，並整合至 Vue Cli 中。另外還要請大家確定好最終作業的主題唷！
 
-使用 [VeeValidate](https://vee-validate.logaretm.com/v4/) 套件完成表單驗證功能，並且串接前台 API 完成購物車功能，[操作文件](https://hackmd.io/FFv0a5cBToOATP7uI5COMQ)
+### 後台
+
+產品頁面：
+- 串接取得、新增、刪除、更新產品 API
+- 啟用狀態顯示
+- Modal 細節欄位
+- 上傳圖片API 
+- 分頁功能
+
+訂單頁面：
+- 串接取得、刪除、更新訂單 API
+- Modal 細節欄位
+- 付款狀態切換
+- 分頁功能
+
+優惠券頁面：
+- 串接取得、新增、刪除、更新優惠券 API
+- 啟用狀態顯示
+- Modal 細節欄位
+- 分頁功能
+
+貼文頁面（加分項目）：
+- 串接取得、新增、刪除、更新貼文 API
+- 啟用公開狀態
+- Modal 細節欄位
+- 分頁功能
+
+登入 / 登出
+
+小功能
+- alert、loading 元件
+- 串接圖片上傳 API
+
+提交難度挑戰：
+LV1：完成後台登入/ 登出、產品頁面、訂單頁面＋主題發想內容
+LV2：完成 LV1 功能＋優惠券頁面＋主題發想內容
+LV3：完成以上功能及撰寫完整的產品文案、圖片
+
 
 ## 課程 API 相關網址：
 - [註冊連結、測試管理平台](https://vue3-course-api.hexschool.io/)
@@ -68,7 +100,7 @@ https://haroldzhen.github.io/vue3-course/week6/#/customer
 ⭐️ 繳交作業時不用附上帳號密碼，很重要！
 
 ## 提交難度挑戰：
-LV3：完成以上功能＋前台表單及登入頁面表單驗證功能
+LV2：完成 LV1 功能＋優惠券頁面＋主題發想內容
 
 
 
