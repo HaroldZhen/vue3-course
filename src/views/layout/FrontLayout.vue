@@ -43,8 +43,7 @@ export default {
 </script>
 
 <style lang="scss">
-/* @import '~bootstrap/scss/bootstrap'; */
-@import '@/assets/scss/backend';
+@import '~bootstrap/scss/bootstrap';
 main {
   min-height: calc(100vh - 134px);
 }
