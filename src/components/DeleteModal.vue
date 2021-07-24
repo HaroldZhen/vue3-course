@@ -21,7 +21,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-danger" @click="onSend">確認刪除</button>
+          <button type="button" class="btn btn-danger" @click="onSend(item.id)">確認刪除</button>
         </div>
       </div>
     </div>
@@ -46,8 +46,8 @@ export default {
     hideModal() {
       this.modal.hide();
     },
-    onSend() {
-      this.$emit('deletItem', this.item.id);
+    onSend(id) {
+      this.$emit('deletItem', id);
       this.hideModal();
     },
   },

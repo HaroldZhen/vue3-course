@@ -28,7 +28,7 @@ export default {
     };
   },
   methods: {
-    getProdut(pid) {
+    getProduct(pid) {
       this.product = {};
       hexAxios
         .get(userAPI.product.sigle(pid))
@@ -80,7 +80,7 @@ export default {
   },
   created() {
     const pid = this.$route.params.id;
-    this.getProdut(pid);
+    this.getProduct(pid);
   },
 };
 </script>
