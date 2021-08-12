@@ -1,5 +1,6 @@
 # Vue 作品實戰班 - 2021夏季
 
+- [第一週 - 從函式拆解認識設計模式](https://codepen.io/YuWin0805/pen/XWMJypV)
 - [第二週 - RESTful API 串接](https://github.com/HaroldZhen/vue3-course/tree/week2-homework)
 - [第三週 - Vue.js 起步走](https://github.com/HaroldZhen/vue3-course/tree/week3-homework)
 - [第四週 - 元件化](https://github.com/HaroldZhen/vue3-course/tree/week4-homework)
